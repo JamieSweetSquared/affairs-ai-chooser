@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Solo stack cost calculator — Affairs</title>
+  <meta name="description" content="Estimate illustrative monthly spend for email, landing, funnel, and SEO bands. Research-labeled ranges — not vendor quotes. Soft systeme.io CTA only when all-in-one fits." />
+  <link rel="canonical" href="https://jamiesweetsquared.github.io/affairs-ai-chooser/stack-cost-calculator.html" />
+  <meta property="og:title" content="Solo stack cost calculator — Affairs" />
+  <meta property="og:description" content="Estimate illustrative monthly spend for email, landing, funnel, and SEO bands. Research-labeled ranges — not vendor quotes. Soft systeme.io CTA only when all-in-one fits." />
+  <meta property="og:url" content="https://jamiesweetsquared.github.io/affairs-ai-chooser/stack-cost-calculator.html" />
+  <meta property="og:type" content="website" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <p class="disclosure" role="note">
+      <strong>Affiliate disclosure:</strong> We may earn a commission when you buy through links on this site.
+      The systeme.io CTA appears only when an all-in-one fit is suggested; it uses a live affiliate href.
+      Kit / Leadpages / Surfer remain <code>/go/placeholder</code> stubs elsewhere on this site.
+      No commission or cookie dollar amounts are shown on this page.
+    </p>
+    <nav class="site-nav" aria-label="Site">
+      <a href="./">Chooser</a>
+      <a href="stack-cost-calculator.html" aria-current="page">Cost calculator</a>
+      <a href="guides.html">Guides</a>
+      <a href="stack-under-100.html">Stack ≤$100</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="measurement.html">Measurement</a>
+    </nav>
+    <p class="crumb"><a href="./">← Back to the chooser</a></p>
+    <h1>Solo stack cost calculator</h1>
+    <p class="lede">
+      Rough monthly bands for email, landing pages, funnel/automations, and SEO writing —
+      <strong>research estimates</strong> from public vendor positioning (Kit / Leadpages / Surfer / systeme.io shape),
+      <em>not</em> live quotes, savings claims, or hands-on reviews.
+    </p>
+  </header>
+
+  <main id="content">
+    <section aria-labelledby="form-h">
+      <h2 id="form-h">Your constraints</h2>
+      <p class="section-note">
+        Pricing signals cited from vendor sites as of 11 Sep 2026. Re-check before you pay.
+        Ranges are illustrative bands with “check current pricing” caveats — we do not invent guaranteed vendor prices.
+      </p>
+
+      <form id="stack-cost-form">
+        <fieldset>
+          <legend>Budget band</legend>
+          <label class="option"><input type="radio" name="budget" value="free" required /> Free / freemium</label>
+          <label class="option"><input type="radio" name="budget" value="starter" checked /> Starter (~$20–50/mo)</label>
+          <label class="option"><input type="radio" name="budget" value="mid" /> Mid (~$50–100/mo)</label>
+          <label class="option"><input type="radio" name="budget" value="stretch" /> Stretch (~$100–200/mo)</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Needs (toggle any that apply)</legend>
+          <label class="option"><input type="checkbox" name="need_email" value="1" /> Email list / newsletter</label>
+          <label class="option"><input type="checkbox" name="need_landing" value="1" /> Landing / campaign pages</label>
+          <label class="option"><input type="checkbox" name="need_funnel" value="1" /> Funnel / automations</label>
+          <label class="option"><input type="checkbox" name="need_seo" value="1" /> SEO writing / AI-visibility</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Prefer all-in-one?</legend>
+          <label class="option"><input type="radio" name="prefer_aio" value="yes" /> Yes — one login for pages + email + checkout if it fits</label>
+          <label class="option"><input type="radio" name="prefer_aio" value="no" checked /> No — separate specialist tools OK</label>
+        </fieldset>
+
+        <div class="submit-bar">
+          <button type="submit" class="btn-primary">Estimate monthly range</button>
+          <button type="reset" class="btn-secondary" style="margin-top:0.5rem;width:100%">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="calc-output" class="calc-output card" hidden aria-live="polite" aria-labelledby="out-h">
+      <h2 id="out-h">Illustrative monthly range</h2>
+      <p class="calc-range-wrap">
+        <span class="calc-range-label">Research estimate</span>
+        <strong id="calc-range" class="calc-range">—</strong>
+      </p>
+      <p class="section-note">
+        Sum of category bands below. Overlapping funnel + landing + email are partially de-duplicated when not on an all-in-one path.
+        <strong>Not a quote.</strong> Check each vendor’s current pricing page before you buy.
+      </p>
+      <h3 class="calc-subh">Category bands</h3>
+      <ul id="calc-lines" class="calc-lines"></ul>
+      <h3 class="calc-subh">Recommendation</h3>
+      <p id="calc-recommendation" class="calc-rec"></p>
+      <p id="calc-cta" class="cta-row"></p>
+      <p id="calc-disclaimer" class="section-note" hidden>
+        No earnings claims. No “save $X vs competitors” without sources. No star ratings.
+        MailerLite is not part of this calculator. systeme.io is the only live affiliate CTA on this site when shown.
+      </p>
+    </section>
+
+    <section aria-labelledby="method-h">
+      <h2 id="method-h">How these bands were chosen</h2>
+      <ul>
+        <li><strong>Email:</strong> creator ESPs often publish free plans; paid steps with list size — illustrative ~$0–50/mo starter band.</li>
+        <li><strong>Landing:</strong> specialist builders can sit near ~$99/mo published entry; DIY often $0 until CRO matters.</li>
+        <li><strong>Funnel / AIO:</strong> systeme.io publishes free + low Startup (~$17/mo cited historically) — illustrative ~$0–30/mo when AIO fits.</li>
+        <li><strong>SEO:</strong> paid editors typically mid-band; often skip on free/starter until you publish on a cadence.</li>
+      </ul>
+      <p>
+        Full framing:
+        <a href="methodology.html">Methodology</a> ·
+        <a href="stack-under-100.html">≤$100 buy order</a> ·
+        <a href="faq-all-in-one-vs-stack.html">AIO vs stack</a> ·
+        <a href="guides.html">Guides hub</a> ·
+        <a href="measurement.html">Measurement</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      <a href="./">AI Tool Chooser</a> ·
+      <a href="stack-cost-calculator.html">Cost calculator</a> ·
+      <a href="guides.html">Guides</a> ·
+      <a href="methodology.html">Methodology</a> ·
+      <a href="measurement.html">Measurement</a> ·
+      <a href="stack-under-100.html">Stack ≤$100</a> ·
+      Affairs cycle-1 MVP · $0 GitHub Pages
+    </p>
+  </footer>
+
+  <script src="calculator.js"></script>
+</body>
+</html>
