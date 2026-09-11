@@ -45,6 +45,8 @@
       category: "Email for creators",
       typicalBuyer: "Creators, newsletter writers, and solo businesses who want email as the hub.",
       source: "kit.com",
+      faqHref: "faq-email-creators.html",
+      faqLabel: "Creator email decision guide",
       fit: "Kit positions itself as an email-first operating system for creators: newsletters, broadcasts, automations, landing pages/forms, and selling digital products from the list. Often a fit when the job is owning an audience in email — not a generic B2B ESP or a CRO lab.",
       pros: [
         "Published as creator email + newsletter tooling (tags, segments, automations)",
@@ -66,6 +68,8 @@
       category: "Landing pages",
       typicalBuyer: "Marketers, small businesses, and agencies who need campaign pages with lead capture.",
       source: "leadpages.com",
+      faqHref: "faq-landing-page-builder.html",
+      faqLabel: "Landing page builder vs DIY",
       fit: "Leadpages positions itself as an AI landing-page builder with hosting, forms, A/B testing, and (on higher plans) Smart Traffic / heatmaps. Often a fit when paid or email traffic needs a single-purpose conversion page — not an ESP or an SEO writer.",
       pros: [
         "Published job: build, host, and optimize standalone campaign / lead-gen pages",
@@ -87,6 +91,8 @@
       category: "SEO / AI content visibility",
       typicalBuyer: "Marketers, agencies, and content teams optimizing pages for search and AI answers.",
       source: "surferseo.com",
+      faqHref: "faq-seo-solo.html",
+      faqLabel: "SEO tool for solo writers (when to skip)",
       fit: "Surfer positions itself as an AI visibility platform with a Content Editor: SERP-based writing guidelines, a Content Score, and (in 2026 marketing) AI-search citation visibility. Often a fit when you publish content and want on-page SEO / AI-answer guidance — scores are not ranking guarantees.",
       pros: [
         "Published core workflow: write/optimize content against live SERP (and AI-search) research",
@@ -126,6 +132,29 @@
     },
   };
 
+  var FAQ_BY_NEED = {
+    writing: [
+      { href: "faq-email-creators.html", label: "Creator email / newsletter guide" },
+      { href: "faq-seo-solo.html", label: "SEO tool for solo writers" },
+      { href: "stack-under-100.html", label: "Stack on ≤$50–100/mo" },
+    ],
+    seo: [
+      { href: "faq-seo-solo.html", label: "SEO / AI-visibility for solo writers" },
+      { href: "stack-under-100.html", label: "Stack on ≤$50–100/mo" },
+      { href: "compare-kit-leadpages-surfer.html", label: "Thin compare" },
+    ],
+    support: [
+      { href: "stack-under-100.html", label: "What to buy first (and when to skip)" },
+      { href: "compare-kit-leadpages-surfer.html", label: "What these three are (and are not)" },
+      { href: "methodology.html", label: "Why support/chat mismatches" },
+    ],
+    scheduling: [
+      { href: "stack-under-100.html", label: "What to buy first (and when to skip)" },
+      { href: "compare-kit-leadpages-surfer.html", label: "What these three are (and are not)" },
+      { href: "methodology.html", label: "Why scheduling/ops mismatches" },
+    ],
+  };
+
   function scoreTool(slug, answers) {
     var n = (WEIGHTS.need[answers.need] || {})[slug] || 0;
     var b = (WEIGHTS.budget[answers.budget] || {})[slug] || 0;
@@ -142,12 +171,18 @@
     });
   }
 
-  function mismatchCopy(need) {
+  function mismatchCopy(need, budget) {
     if (need === "support") {
-      return "None of Kit, Leadpages, or Surfer is a support-chat or helpdesk product. Showing the cycle-1 slots anyway, ordered by nearest published-fit.";
+      return "Mismatch: none of Kit, Leadpages, or Surfer is a support-chat or helpdesk product. Showing the cycle-1 slots anyway, ordered by nearest published-fit — not a recommendation to buy them for support.";
     }
     if (need === "scheduling") {
-      return "None of Kit, Leadpages, or Surfer is a scheduling / ops product. Showing the cycle-1 slots anyway, ordered by nearest published-fit.";
+      return "Mismatch: none of Kit, Leadpages, or Surfer is a scheduling / ops product. Showing the cycle-1 slots anyway, ordered by nearest published-fit — not a recommendation to buy them for scheduling.";
+    }
+    if (
+      (budget === "free" || budget === "starter") &&
+      need !== "writing"
+    ) {
+      return "Budget note: on free / starter bands, Leadpages’ published Grow plan (~$99/mo) and paid SEO editors often sit above the band. Prefer Kit’s published free plan or DIY pages unless SEO/content tooling is clearly the job — see the stack guide.";
     }
     return "";
   }
@@ -157,6 +192,24 @@
       "/go/placeholder?utm_source=affairs&utm_medium=chooser&utm_campaign=" +
       encodeURIComponent(slug)
     );
+  }
+
+  function renderFaqLinks(answers) {
+    var el = document.getElementById("faq-links");
+    if (!el) return;
+    var links = FAQ_BY_NEED[answers.need] || [
+      { href: "stack-under-100.html", label: "Stack on ≤$50–100/mo" },
+      { href: "compare-kit-leadpages-surfer.html", label: "Thin compare" },
+    ];
+    el.hidden = false;
+    el.innerHTML =
+      "<strong>Related guides:</strong> " +
+      links
+        .map(function (l) {
+          return '<a href="' + l.href + '">' + l.label + "</a>";
+        })
+        .join(" · ") +
+      ' · <a href="methodology.html">Methodology</a>';
   }
 
   function renderCards(ranked, answers) {
@@ -234,6 +287,15 @@
         cons.appendChild(li);
       });
 
+      var related = document.createElement("p");
+      related.className = "related-faq";
+      related.innerHTML =
+        'Related: <a href="' +
+        tool.faqHref +
+        '">' +
+        tool.faqLabel +
+        '</a> · <a href="stack-under-100.html">Stack ≤$50–100/mo</a>';
+
       var cta = document.createElement("a");
       cta.className = "cta";
       cta.href = ctaHref(tool.slug);
@@ -264,6 +326,7 @@
       card.appendChild(pros);
       card.appendChild(consLabel);
       card.appendChild(cons);
+      card.appendChild(related);
       card.appendChild(cta);
       container.appendChild(card);
     });
@@ -273,24 +336,118 @@
   var results = document.getElementById("results");
   var resetBtn = document.getElementById("reset-btn");
   var mismatchEl = document.getElementById("mismatch-note");
+  var progressFill = document.getElementById("progress-fill");
+  var progressLabel = document.getElementById("progress-label");
+  var formHint = document.getElementById("form-hint");
+  var submitBtn = document.getElementById("submit-btn");
+  var FIELDS = ["budget", "need", "team"];
+
+  function readAnswers() {
+    var fd = new FormData(form);
+    return {
+      budget: fd.get("budget") || "",
+      need: fd.get("need") || "",
+      team: fd.get("team") || "",
+    };
+  }
+
+  function updateProgress() {
+    var answers = readAnswers();
+    var filled = FIELDS.filter(function (f) {
+      return !!answers[f];
+    }).length;
+
+    if (progressFill) progressFill.style.width = (filled / 3) * 100 + "%";
+    if (progressLabel) {
+      progressLabel.textContent = "Progress: " + filled + " of 3 answered";
+    }
+
+    FIELDS.forEach(function (name) {
+      var fs = form.querySelector('fieldset[data-step="' + name + '"]');
+      var hint = form.querySelector('[data-hint-for="' + name + '"]');
+      if (fs) {
+        if (answers[name]) fs.classList.add("is-complete");
+        else fs.classList.remove("is-complete");
+      }
+      if (hint) hint.textContent = answers[name] ? "✓" : "";
+    });
+
+    form.querySelectorAll("label.option").forEach(function (label) {
+      var input = label.querySelector('input[type="radio"]');
+      if (input && input.checked) label.classList.add("is-selected");
+      else label.classList.remove("is-selected");
+    });
+
+    if (formHint) {
+      if (filled === 0) {
+        formHint.hidden = false;
+        formHint.textContent =
+          "Pick a budget, primary need, and team size. Support/chat and scheduling will show a mismatch — those jobs are not in the cycle-1 slots.";
+      } else if (filled < 3) {
+        formHint.hidden = false;
+        var missing = FIELDS.filter(function (f) {
+          return !answers[f];
+        }).map(function (f) {
+          return f === "budget" ? "budget band" : f === "need" ? "primary need" : "team size";
+        });
+        formHint.textContent =
+          "Still needed: " + missing.join(" · ") + ". Then tap Show recommendations.";
+      } else {
+        formHint.hidden = true;
+        formHint.textContent = "";
+      }
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = filled < 3;
+      submitBtn.setAttribute("aria-disabled", filled < 3 ? "true" : "false");
+    }
+  }
+
+  form.addEventListener("change", function (e) {
+    updateProgress();
+    var t = e.target;
+    if (t && t.name && FIELDS.indexOf(t.name) !== -1) {
+      var answers = readAnswers();
+      var filled = FIELDS.filter(function (f) {
+        return !!answers[f];
+      }).length;
+      logEvent("progress", { field: t.name, value: t.value, filled: filled });
+    }
+  });
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-    var fd = new FormData(form);
-    var answers = {
-      budget: fd.get("budget"),
-      need: fd.get("need"),
-      team: fd.get("team"),
-    };
-    if (!answers.budget || !answers.need || !answers.team) return;
+    var answers = readAnswers();
+    if (!answers.budget || !answers.need || !answers.team) {
+      if (formHint) {
+        formHint.hidden = false;
+        formHint.textContent =
+          "Select all three answers (budget, need, team) before showing recommendations.";
+      }
+      var firstEmpty = form.querySelector(
+        'input[name="budget"]:not(:checked), input[name="need"]:not(:checked), input[name="team"]:not(:checked)'
+      );
+      // focus the first unanswered fieldset's first radio
+      FIELDS.some(function (name) {
+        if (!answers[name]) {
+          var radio = form.querySelector('input[name="' + name + '"]');
+          if (radio) radio.focus();
+          return true;
+        }
+        return false;
+      });
+      return;
+    }
 
     var ranked = orderTools(answers);
     renderCards(ranked, answers);
+    renderFaqLinks(answers);
 
-    var note = mismatchCopy(answers.need);
+    var note = mismatchCopy(answers.need, answers.budget);
     if (note) {
       mismatchEl.hidden = false;
-      mismatchEl.textContent = note;
+      mismatchEl.innerHTML = "<strong>Heads-up.</strong> " + note;
     } else {
       mismatchEl.hidden = true;
       mismatchEl.textContent = "";
@@ -304,6 +461,8 @@
       }),
     });
     results.scrollIntoView({ behavior: "smooth", block: "start" });
+    var heading = document.getElementById("results-heading");
+    if (heading) heading.focus({ preventScroll: true });
   });
 
   resetBtn.addEventListener("click", function () {
@@ -312,8 +471,23 @@
     mismatchEl.hidden = true;
     mismatchEl.textContent = "";
     document.getElementById("cards").innerHTML = "";
+    var faqLinks = document.getElementById("faq-links");
+    if (faqLinks) {
+      faqLinks.hidden = true;
+      faqLinks.innerHTML = "";
+    }
+    updateProgress();
     logEvent("reset", {});
+    var firstRadio = form.querySelector('input[type="radio"]');
+    if (firstRadio) firstRadio.focus();
   });
 
+  // Make results heading focusable for a11y after submit
+  var resultsHeading = document.getElementById("results-heading");
+  if (resultsHeading && !resultsHeading.hasAttribute("tabindex")) {
+    resultsHeading.setAttribute("tabindex", "-1");
+  }
+
+  updateProgress();
   logEvent("page_view", { path: location.pathname });
 })();
