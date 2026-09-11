@@ -37,7 +37,7 @@
   }
 
   // Named cycle-1 slots. Pros/cons are research-labeled fit copy — not hands-on reviews.
-  // Positioning paraphrased from vendor sites (kit.com, leadpages.com, surferseo.com), 2026-09-11.
+  // Positioning paraphrased from vendor sites (kit.com, leadpages.com, surferseo.com, systeme.io), 2026-09-11.
   var TOOLS = [
     {
       slug: "kit",
@@ -108,34 +108,67 @@
         "May overlap with other SEO suites (keywords, rank tracking, broader site crawls)",
       ],
     },
+    {
+      slug: "systeme",
+      name: "systeme.io",
+      category: "Funnel / email / all-in-one",
+      typicalBuyer: "Solopreneurs, coaches, creators, and small online businesses who want funnels, email, and selling in one dashboard.",
+      source: "systeme.io",
+      faqHref: "faq-systeme-funnel.html",
+      faqLabel: "Funnel + email all-in-one (when it fits)",
+      // Live affiliate href (joined 2026-09-11). Pending approval ≠ cash. CTA builder appends UTMs.
+      affiliateHref: "https://systeme.io/?sa=sa0281332032905064db809aa4c70fcdf0992f044d",
+      fit: "systeme.io positions itself as an all-in-one platform for online businesses: sales funnels, email marketing (unlimited sends on published plans), landing/sales pages, courses, payments, and an affiliate program in one account. Often a fit when the job is a simple funnel-plus-email stack on a budget — not a specialist ESP, a dedicated CRO lab, or an SEO content editor.",
+      pros: [
+        "Published job: replace a split stack (funnels + email + courses + checkout) with one dashboard",
+        "Official feature set includes funnel builder, email broadcasts/sequences, tagging, and landing/sales pages",
+        "Publishes a permanently free plan (contact / funnel limits — check current systeme.io pricing)",
+        "Paid plans are marketed from a low monthly band (Startup cited around $17/mo on their pricing page)",
+        "Aimed at entrepreneurs and small online businesses rather than enterprise marketing clouds",
+      ],
+      cons: [
+        "All-in-one breadth is the pitch — not a specialist creator ESP, landing-page CRO suite, or SEO writer",
+        "Free-plan funnel / course / contact caps apply (confirm live limits before you commit)",
+        "Not an SEO content editor, helpdesk, or dedicated scheduling/ops product",
+        "Design flexibility and third-party integrations may be narrower than a best-of-breed stack (vendor comparison, not a lab test)",
+      ],
+    },
   ];
 
   // Documented on methodology.html. Need is the main weight; budget/team only where vendors publish a signal.
+  // systeme.io points are from published positioning (systeme.io / pricing, 2026-09-11) — not lab scores:
+  //   writing 2: email + funnel/landing pages exist; not a writing editor (Surfer) or creator-ESP-first (Kit)
+  //   seo 0: not an SEO / content-score product
+  //   support 0: not a helpdesk/chat product the buyer would run
+  //   scheduling 1: booking calendar is published; still not a dedicated ops/scheduler
+  //   budget.free 2 / starter 2: permanently free plan + Startup cited ~$17/mo
+  //   budget.team 1 / enterprise 0: paid plans can sit in $50–200; entrepreneur, not enterprise, positioning
+  //   team.solo 2 / small 2 / mid 1 / large 0: solopreneurs and small online businesses
   var WEIGHTS = {
     need: {
-      writing: { kit: 3, leadpages: 1, surfer: 3 },
-      seo: { kit: 1, leadpages: 1, surfer: 4 },
-      support: { kit: 1, leadpages: 1, surfer: 0 },
-      scheduling: { kit: 1, leadpages: 1, surfer: 0 },
+      writing: { kit: 3, leadpages: 1, surfer: 3, systeme: 2 },
+      seo: { kit: 1, leadpages: 1, surfer: 4, systeme: 0 },
+      support: { kit: 1, leadpages: 1, surfer: 0, systeme: 0 },
+      scheduling: { kit: 1, leadpages: 1, surfer: 0, systeme: 1 },
     },
     budget: {
-      free: { kit: 2, leadpages: 0, surfer: 0 },
-      starter: { kit: 2, leadpages: 0, surfer: 0 },
-      team: { kit: 1, leadpages: 2, surfer: 1 },
-      enterprise: { kit: 0, leadpages: 1, surfer: 2 },
+      free: { kit: 2, leadpages: 0, surfer: 0, systeme: 2 },
+      starter: { kit: 2, leadpages: 0, surfer: 0, systeme: 2 },
+      team: { kit: 1, leadpages: 2, surfer: 1, systeme: 1 },
+      enterprise: { kit: 0, leadpages: 1, surfer: 2, systeme: 0 },
     },
     team: {
-      solo: { kit: 2, leadpages: 1, surfer: 1 },
-      small: { kit: 2, leadpages: 2, surfer: 1 },
-      mid: { kit: 1, leadpages: 2, surfer: 2 },
-      large: { kit: 1, leadpages: 2, surfer: 2 },
+      solo: { kit: 2, leadpages: 1, surfer: 1, systeme: 2 },
+      small: { kit: 2, leadpages: 2, surfer: 1, systeme: 2 },
+      mid: { kit: 1, leadpages: 2, surfer: 2, systeme: 1 },
+      large: { kit: 1, leadpages: 2, surfer: 2, systeme: 0 },
     },
   };
 
   var FAQ_BY_NEED = {
     writing: [
       { href: "faq-email-creators.html", label: "Creator email / newsletter guide" },
-      { href: "faq-seo-solo.html", label: "SEO tool for solo writers" },
+      { href: "faq-systeme-funnel.html", label: "Funnel + email all-in-one" },
       { href: "stack-under-100.html", label: "Stack on ≤$50–100/mo" },
     ],
     seo: [
@@ -145,12 +178,12 @@
     ],
     support: [
       { href: "stack-under-100.html", label: "What to buy first (and when to skip)" },
-      { href: "compare-kit-leadpages-surfer.html", label: "What these three are (and are not)" },
+      { href: "compare-kit-leadpages-surfer.html", label: "What these tools are (and are not)" },
       { href: "methodology.html", label: "Why support/chat mismatches" },
     ],
     scheduling: [
       { href: "stack-under-100.html", label: "What to buy first (and when to skip)" },
-      { href: "compare-kit-leadpages-surfer.html", label: "What these three are (and are not)" },
+      { href: "compare-kit-leadpages-surfer.html", label: "What these tools are (and are not)" },
       { href: "methodology.html", label: "Why scheduling/ops mismatches" },
     ],
   };
@@ -173,25 +206,44 @@
 
   function mismatchCopy(need, budget) {
     if (need === "support") {
-      return "Mismatch: none of Kit, Leadpages, or Surfer is a support-chat or helpdesk product. Showing the cycle-1 slots anyway, ordered by nearest published-fit — not a recommendation to buy them for support.";
+      return "Mismatch: none of Kit, Leadpages, Surfer, or systeme.io is a support-chat or helpdesk product. Showing the cycle-1 slots anyway, ordered by nearest published-fit — not a recommendation to buy them for support.";
     }
     if (need === "scheduling") {
-      return "Mismatch: none of Kit, Leadpages, or Surfer is a scheduling / ops product. Showing the cycle-1 slots anyway, ordered by nearest published-fit — not a recommendation to buy them for scheduling.";
+      return "Mismatch: none of Kit, Leadpages, Surfer, or systeme.io is a dedicated scheduling / ops product (systeme.io publishes a booking calendar — nearest published-fit, not a Calendly replacement claim). Showing the cycle-1 slots anyway, ordered by nearest published-fit — not a recommendation to buy them for scheduling.";
     }
     if (
       (budget === "free" || budget === "starter") &&
       need !== "writing"
     ) {
-      return "Budget note: on free / starter bands, Leadpages’ published Grow plan (~$99/mo) and paid SEO editors often sit above the band. Prefer Kit’s published free plan or DIY pages unless SEO/content tooling is clearly the job — see the stack guide.";
+      return "Budget note: on free / starter bands, Leadpages’ published Grow plan (~$99/mo) and paid SEO editors often sit above the band. Prefer Kit’s or systeme.io’s published free plans or DIY pages unless SEO/content tooling is clearly the job — see the stack guide.";
     }
     return "";
   }
 
-  function ctaHref(slug) {
+  function appendChooserUtms(href, slug) {
+    // Merge UTMs onto an existing query (e.g. ?sa=… already present → use & for utm).
+    var hasQuery = href.indexOf("?") !== -1;
+    var params =
+      "utm_source=affairs&utm_medium=chooser&utm_campaign=" +
+      encodeURIComponent(slug);
+    if (!hasQuery) return href + "?" + params;
+    var joiner = href.charAt(href.length - 1) === "?" || href.charAt(href.length - 1) === "&" ? "" : "&";
+    return href + joiner + params;
+  }
+
+  function ctaHref(tool) {
+    if (tool.affiliateHref) {
+      return appendChooserUtms(tool.affiliateHref, tool.slug);
+    }
     return (
       "/go/placeholder?utm_source=affairs&utm_medium=chooser&utm_campaign=" +
-      encodeURIComponent(slug)
+      encodeURIComponent(tool.slug)
     );
+  }
+
+  function isPlaceholderHref(href) {
+    if (!href) return true;
+    return href.indexOf("/go/") === 0 || href.indexOf("/go/placeholder") !== -1;
   }
 
   function renderFaqLinks(answers) {
@@ -298,8 +350,15 @@
 
       var cta = document.createElement("a");
       cta.className = "cta";
-      cta.href = ctaHref(tool.slug);
-      cta.textContent = "View " + tool.name + " (placeholder CTA)";
+      var href = ctaHref(tool);
+      cta.href = href;
+      if (tool.affiliateHref) {
+        cta.textContent = "View " + tool.name;
+        cta.setAttribute("rel", "noopener noreferrer sponsored");
+        cta.setAttribute("target", "_blank");
+      } else {
+        cta.textContent = "View " + tool.name + " (placeholder CTA)";
+      }
       cta.setAttribute("data-affiliate", tool.slug);
       cta.setAttribute("data-rank", String(i + 1));
       cta.addEventListener("click", function (ev) {
@@ -311,7 +370,8 @@
           answers: answers,
         });
         // /go/* not hosted on Pages yet — keep href for UTM inspection, prevent 404 nav.
-        if (!ev.metaKey && !ev.ctrlKey) {
+        // Live affiliateHref destinations (systeme.io) should navigate.
+        if (isPlaceholderHref(cta.getAttribute("href")) && !ev.metaKey && !ev.ctrlKey) {
           ev.preventDefault();
         }
       });
