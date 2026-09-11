@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Tool Chooser — Affairs</title>
+  <meta name="description" content="Answer a few questions to get placeholder AI tool recommendations. Affiliate disclosure applies." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <p class="disclosure" role="note">
+      <strong>Affiliate disclosure:</strong> We may earn a commission when you buy through links on this site.
+    </p>
+    <h1>AI Tool Chooser</h1>
+    <p class="lede">Answer 3 short questions. We’ll show 3 placeholder tool cards matched to your answers — not hands-on reviews.</p>
+  </header>
+
+  <main>
+    <section id="selector" aria-labelledby="selector-heading">
+      <h2 id="selector-heading">Your needs</h2>
+      <form id="chooser-form">
+        <fieldset>
+          <legend>Budget band</legend>
+          <label><input type="radio" name="budget" value="free" required /> Free / freemium</label>
+          <label><input type="radio" name="budget" value="starter" /> Starter (~$20–50/mo)</label>
+          <label><input type="radio" name="budget" value="team" /> Team (~$50–200/mo)</label>
+          <label><input type="radio" name="budget" value="enterprise" /> Enterprise</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Primary need</legend>
+          <label><input type="radio" name="need" value="writing" required /> Writing / content</label>
+          <label><input type="radio" name="need" value="seo" /> SEO / research</label>
+          <label><input type="radio" name="need" value="support" /> Support / chat</label>
+          <label><input type="radio" name="need" value="scheduling" /> Scheduling / ops</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Team size</legend>
+          <label><input type="radio" name="team" value="solo" required /> Solo</label>
+          <label><input type="radio" name="team" value="small" /> Small (2–10)</label>
+          <label><input type="radio" name="team" value="mid" /> Mid (11–50)</label>
+          <label><input type="radio" name="team" value="large" /> Large (50+)</label>
+        </fieldset>
+
+        <button type="submit" class="btn-primary">Show recommendations</button>
+      </form>
+    </section>
+
+    <section id="results" class="results" hidden aria-live="polite" aria-labelledby="results-heading">
+      <h2 id="results-heading">Placeholder recommendations</h2>
+      <p class="results-note">Cards below are category placeholders for cycle-1. Pros/cons are research placeholders — not a hands-on review.</p>
+      <div id="cards" class="cards"></div>
+      <button type="button" id="reset-btn" class="btn-secondary">Start over</button>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>First-hosting picker may come later. Built for Affairs cycle-1 MVP.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
