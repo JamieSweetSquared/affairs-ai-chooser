@@ -37,69 +37,119 @@
   }
 
   // Named cycle-1 slots. Pros/cons are research-labeled fit copy — not hands-on reviews.
+  // Positioning paraphrased from vendor sites (kit.com, leadpages.com, surferseo.com), 2026-09-11.
   var TOOLS = [
     {
       slug: "kit",
       name: "Kit",
       category: "Email for creators",
-      fit: "Often a fit when you need creator-focused email + landing basics.",
+      typicalBuyer: "Creators, newsletter writers, and solo businesses who want email as the hub.",
+      source: "kit.com",
+      fit: "Kit positions itself as an email-first operating system for creators: newsletters, broadcasts, automations, landing pages/forms, and selling digital products from the list. Often a fit when the job is owning an audience in email — not a generic B2B ESP or a CRO lab.",
       pros: [
-        "Creator-oriented email list tools",
-        "Forms and simple landing pages in one stack",
-        "Common pick for newsletter + digital product flows",
+        "Published as creator email + newsletter tooling (tags, segments, automations)",
+        "Official feature set includes landing pages, forms, and list-growth / recommendation flows",
+        "Commerce (digital products, subscriptions, sponsorships) is part of their positioning",
+        "Publishes a free plan (subscriber-count limits — check current kit.com pricing)",
+        "Aimed at non-technical creator businesses rather than enterprise marketing clouds",
       ],
       cons: [
-        "May be more than you need for pure transactional mail",
-        "Pricing scales with subscriber count (check current plans)",
-        "Not a full marketing suite replacement",
+        "Not positioned as transactional / product-email for generic ecommerce stacks",
+        "Pricing typically scales with list size (confirm current plans; we have not audited billing)",
+        "Landing pages here are creator-list tools, not a dedicated A/B testing / heatmap platform",
+        "Not an SEO content editor, helpdesk, or scheduler",
       ],
     },
     {
       slug: "leadpages",
       name: "Leadpages",
       category: "Landing pages",
-      fit: "Often a fit when the primary need is fast landing pages and lead capture.",
+      typicalBuyer: "Marketers, small businesses, and agencies who need campaign pages with lead capture.",
+      source: "leadpages.com",
+      fit: "Leadpages positions itself as an AI landing-page builder with hosting, forms, A/B testing, and (on higher plans) Smart Traffic / heatmaps. Often a fit when paid or email traffic needs a single-purpose conversion page — not an ESP or an SEO writer.",
       pros: [
-        "Templates aimed at conversion pages",
-        "Form / lead capture workflows",
-        "Useful when you want pages without a full site rebuild",
+        "Published job: build, host, and optimize standalone campaign / lead-gen pages",
+        "Lead capture plus integrations to common email and CRM tools (per their site)",
+        "A/B testing called out as built-in from paid plans; heatmaps / Smart Traffic on higher tiers",
+        "Useful when you want pages without rebuilding a full marketing site",
+        "Site lists a 7-day trial and paid plans starting at $99/mo (Grow) — check live pricing",
       ],
       cons: [
-        "Overlaps with page builders you may already pay for",
-        "Ongoing subscription vs one-off page needs",
-        "Confirm current integrations before committing",
+        "Paid product on their public pricing (not a free landing-page tool)",
+        "Overlaps with website builders or ESP landing pages you may already pay for",
+        "Not an email platform, SEO content editor, or support-chat product",
+        "Confirm current plan features (testing, heatmaps, traffic rules) before committing",
       ],
     },
     {
       slug: "surfer",
       name: "Surfer",
-      category: "SEO / AI writing visibility",
-      fit: "Often a fit when SEO content scoring and on-page guidance matter.",
+      category: "SEO / AI content visibility",
+      typicalBuyer: "Marketers, agencies, and content teams optimizing pages for search and AI answers.",
+      source: "surferseo.com",
+      fit: "Surfer positions itself as an AI visibility platform with a Content Editor: SERP-based writing guidelines, a Content Score, and (in 2026 marketing) AI-search citation visibility. Often a fit when you publish content and want on-page SEO / AI-answer guidance — scores are not ranking guarantees.",
       pros: [
-        "On-page SEO content editor / scoring style workflows",
-        "Keyword and SERP-oriented writing guidance",
-        "Common in content teams optimizing published posts",
+        "Published core workflow: write/optimize content against live SERP (and AI-search) research",
+        "Content Score / editor guidelines are the product, not a general website builder",
+        "Aimed at marketers, agencies, SEOs, and in-house content teams who ship regularly",
+        "Also markets AI-answer visibility (how models describe a brand) alongside classic on-page SEO",
+        "Useful as a writing companion when SEO content — not email or landing-page CRO — is the job",
       ],
       cons: [
-        "Scores are guidance, not ranking guarantees",
-        "Best value if you publish content regularly",
-        "May duplicate features in other SEO suites",
+        "Scores and guidelines are research-style suggestions, not ranking or citation guarantees",
+        "Not an email tool, landing-page CRO suite, helpdesk, or scheduler",
+        "Best value if you produce or refresh content on a cadence (their own case studies assume that)",
+        "May overlap with other SEO suites (keywords, rank tracking, broader site crawls)",
       ],
     },
   ];
 
-  function orderForNeed(need) {
-    // Re-rank the same three named slots by primary need (still placeholders).
-    if (need === "seo" || need === "writing") {
-      return [TOOLS[2], TOOLS[0], TOOLS[1]]; // Surfer, Kit, Leadpages
-    }
+  // Documented on methodology.html. Need is the main weight; budget/team only where vendors publish a signal.
+  var WEIGHTS = {
+    need: {
+      writing: { kit: 3, leadpages: 1, surfer: 3 },
+      seo: { kit: 1, leadpages: 1, surfer: 4 },
+      support: { kit: 1, leadpages: 1, surfer: 0 },
+      scheduling: { kit: 1, leadpages: 1, surfer: 0 },
+    },
+    budget: {
+      free: { kit: 2, leadpages: 0, surfer: 0 },
+      starter: { kit: 2, leadpages: 0, surfer: 0 },
+      team: { kit: 1, leadpages: 2, surfer: 1 },
+      enterprise: { kit: 0, leadpages: 1, surfer: 2 },
+    },
+    team: {
+      solo: { kit: 2, leadpages: 1, surfer: 1 },
+      small: { kit: 2, leadpages: 2, surfer: 1 },
+      mid: { kit: 1, leadpages: 2, surfer: 2 },
+      large: { kit: 1, leadpages: 2, surfer: 2 },
+    },
+  };
+
+  function scoreTool(slug, answers) {
+    var n = (WEIGHTS.need[answers.need] || {})[slug] || 0;
+    var b = (WEIGHTS.budget[answers.budget] || {})[slug] || 0;
+    var t = (WEIGHTS.team[answers.team] || {})[slug] || 0;
+    return { total: n + b + t, need: n, budget: b, team: t };
+  }
+
+  function orderTools(answers) {
+    return TOOLS.map(function (tool) {
+      return { tool: tool, score: scoreTool(tool.slug, answers) };
+    }).sort(function (a, b) {
+      if (b.score.total !== a.score.total) return b.score.total - a.score.total;
+      return TOOLS.indexOf(a.tool) - TOOLS.indexOf(b.tool);
+    });
+  }
+
+  function mismatchCopy(need) {
     if (need === "support") {
-      return [TOOLS[0], TOOLS[1], TOOLS[2]]; // Kit, Leadpages, Surfer
+      return "None of Kit, Leadpages, or Surfer is a support-chat or helpdesk product. Showing the cycle-1 slots anyway, ordered by nearest published-fit.";
     }
     if (need === "scheduling") {
-      return [TOOLS[1], TOOLS[0], TOOLS[2]]; // Leadpages, Kit, Surfer
+      return "None of Kit, Leadpages, or Surfer is a scheduling / ops product. Showing the cycle-1 slots anyway, ordered by nearest published-fit.";
     }
-    return TOOLS.slice();
+    return "";
   }
 
   function ctaHref(slug) {
@@ -109,17 +159,19 @@
     );
   }
 
-  function renderCards(tools, answers) {
+  function renderCards(ranked, answers) {
     var container = document.getElementById("cards");
     container.innerHTML = "";
-    tools.forEach(function (tool, i) {
+    ranked.forEach(function (row, i) {
+      var tool = row.tool;
+      var score = row.score;
       var card = document.createElement("article");
       card.className = "card";
       card.setAttribute("data-tool-slug", tool.slug);
 
       var badge = document.createElement("span");
       badge.className = "placeholder-badge";
-      badge.textContent = "Research placeholder";
+      badge.textContent = "Research placeholder — not a hands-on review";
 
       var h3 = document.createElement("h3");
       h3.textContent = tool.name;
@@ -127,8 +179,19 @@
       var cat = document.createElement("p");
       cat.className = "match";
       cat.textContent =
+        "#" +
+        (i + 1) +
+        " · " +
         tool.category +
-        " · ranked for " +
+        " · score " +
+        score.total +
+        " (need " +
+        score.need +
+        " + budget " +
+        score.budget +
+        " + team " +
+        score.team +
+        ") · " +
         answers.need +
         " · " +
         answers.budget +
@@ -136,12 +199,21 @@
         answers.team;
 
       var fit = document.createElement("p");
+      fit.className = "fit";
       fit.textContent = tool.fit;
+
+      var buyer = document.createElement("p");
+      buyer.className = "buyer";
+      buyer.textContent = "Typical buyer (published): " + tool.typicalBuyer;
+
+      var source = document.createElement("p");
+      source.className = "buyer";
+      source.textContent = "Positioning source: " + tool.source + " — research, not a review.";
 
       var prosLabel = document.createElement("p");
       prosLabel.className = "label";
       prosLabel.textContent =
-        "Pros — Research placeholder — not a hands-on review";
+        "Fit notes — Research placeholder — not a hands-on review";
 
       var pros = document.createElement("ul");
       tool.pros.forEach(function (p) {
@@ -153,7 +225,7 @@
       var consLabel = document.createElement("p");
       consLabel.className = "label";
       consLabel.textContent =
-        "Cons — Research placeholder — not a hands-on review";
+        "Caveats — Research placeholder — not a hands-on review";
 
       var cons = document.createElement("ul");
       tool.cons.forEach(function (c) {
@@ -173,6 +245,7 @@
           slug: tool.slug,
           rank: i + 1,
           href: cta.getAttribute("href"),
+          score: score,
           answers: answers,
         });
         // /go/* not hosted on Pages yet — keep href for UTM inspection, prevent 404 nav.
@@ -185,6 +258,8 @@
       card.appendChild(h3);
       card.appendChild(cat);
       card.appendChild(fit);
+      card.appendChild(buyer);
+      card.appendChild(source);
       card.appendChild(prosLabel);
       card.appendChild(pros);
       card.appendChild(consLabel);
@@ -197,6 +272,7 @@
   var form = document.getElementById("chooser-form");
   var results = document.getElementById("results");
   var resetBtn = document.getElementById("reset-btn");
+  var mismatchEl = document.getElementById("mismatch-note");
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -208,13 +284,23 @@
     };
     if (!answers.budget || !answers.need || !answers.team) return;
 
-    var tools = orderForNeed(answers.need);
-    renderCards(tools, answers);
+    var ranked = orderTools(answers);
+    renderCards(ranked, answers);
+
+    var note = mismatchCopy(answers.need);
+    if (note) {
+      mismatchEl.hidden = false;
+      mismatchEl.textContent = note;
+    } else {
+      mismatchEl.hidden = true;
+      mismatchEl.textContent = "";
+    }
+
     results.hidden = false;
     logEvent("recommend", {
       answers: answers,
-      tools: tools.map(function (t) {
-        return t.slug;
+      tools: ranked.map(function (r) {
+        return { slug: r.tool.slug, score: r.score.total };
       }),
     });
     results.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -223,6 +309,8 @@
   resetBtn.addEventListener("click", function () {
     form.reset();
     results.hidden = true;
+    mismatchEl.hidden = true;
+    mismatchEl.textContent = "";
     document.getElementById("cards").innerHTML = "";
     logEvent("reset", {});
   });
