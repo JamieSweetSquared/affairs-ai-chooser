@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jamiesweetsquared.github.io/affairs-ai-chooser/sitemap.xml
