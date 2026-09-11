@@ -524,3 +524,62 @@ input:focus-visible,
     min-width: 14rem;
   }
 }
+
+/* Stack cost calculator */
+.calc-output {
+  margin-top: 1.5rem;
+}
+
+.calc-range-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0 0 0.75rem;
+}
+
+.calc-range-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.calc-range {
+  font-size: 1.75rem;
+  color: var(--ok);
+}
+
+.calc-subh {
+  font-size: 1rem;
+  margin: 1rem 0 0.4rem;
+}
+
+.calc-lines {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.calc-lines li {
+  margin-bottom: 0.75rem;
+}
+
+.calc-note,
+.calc-why,
+.calc-diy {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.calc-rec {
+  margin: 0 0 0.75rem;
+}
+
+.cta-row {
+  margin: 0.75rem 0;
+}
+
+.cta-row .btn-secondary {
+  margin-top: 0;
+  width: auto;
+  display: inline-block;
+}
