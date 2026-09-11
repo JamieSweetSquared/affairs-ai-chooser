@@ -15,6 +15,16 @@
       <strong>Affiliate disclosure:</strong> We may earn a commission when you buy through links on this site.
       Until PartnerStack links exist, every “View” button is a <code>/go/placeholder</code> stub — it does not send you to a vendor.
     </p>
+    <nav class="site-nav" aria-label="Site">
+      <a href="./" aria-current="page">Chooser</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="stack-under-100.html">Stack ≤$100</a>
+      <a href="faq-email-creators.html">Creator email</a>
+      <a href="faq-landing-page-builder.html">Landing pages</a>
+      <a href="faq-seo-solo.html">SEO solo</a>
+      <a href="compare-kit-leadpages-surfer.html">Compare</a>
+      <a href="measurement.html">Measurement</a>
+    </nav>
     <h1>AI Tool Chooser</h1>
     <p class="lede">
       Answer 3 short questions. We’ll rank <strong>Kit</strong>, <strong>Leadpages</strong>, and <strong>Surfer</strong>
@@ -24,33 +34,43 @@
 
   <main>
     <section id="selector" aria-labelledby="selector-heading">
+      <div class="progress-bar" role="status" aria-live="polite">
+        <p id="progress-label" class="progress-label">Progress: 0 of 3 answered</p>
+        <div class="progress-track" aria-hidden="true">
+          <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
       <h2 id="selector-heading">Your needs</h2>
       <form id="chooser-form">
-        <fieldset>
-          <legend>Budget band</legend>
-          <label><input type="radio" name="budget" value="free" required /> Free / freemium</label>
-          <label><input type="radio" name="budget" value="starter" /> Starter (~$20–50/mo)</label>
-          <label><input type="radio" name="budget" value="team" /> Team (~$50–200/mo)</label>
-          <label><input type="radio" name="budget" value="enterprise" /> Enterprise</label>
+        <fieldset data-step="budget">
+          <legend>Budget band <span class="step-hint" data-hint-for="budget"></span></legend>
+          <label class="option"><input type="radio" name="budget" value="free" required /> Free / freemium</label>
+          <label class="option"><input type="radio" name="budget" value="starter" /> Starter (~$20–50/mo)</label>
+          <label class="option"><input type="radio" name="budget" value="team" /> Team (~$50–200/mo)</label>
+          <label class="option"><input type="radio" name="budget" value="enterprise" /> Enterprise</label>
         </fieldset>
 
-        <fieldset>
-          <legend>Primary need</legend>
-          <label><input type="radio" name="need" value="writing" required /> Writing / content</label>
-          <label><input type="radio" name="need" value="seo" /> SEO / research</label>
-          <label><input type="radio" name="need" value="support" /> Support / chat</label>
-          <label><input type="radio" name="need" value="scheduling" /> Scheduling / ops</label>
+        <fieldset data-step="need">
+          <legend>Primary need <span class="step-hint" data-hint-for="need"></span></legend>
+          <label class="option"><input type="radio" name="need" value="writing" required /> Writing / content</label>
+          <label class="option"><input type="radio" name="need" value="seo" /> SEO / research</label>
+          <label class="option"><input type="radio" name="need" value="support" /> Support / chat</label>
+          <label class="option"><input type="radio" name="need" value="scheduling" /> Scheduling / ops</label>
         </fieldset>
 
-        <fieldset>
-          <legend>Team size</legend>
-          <label><input type="radio" name="team" value="solo" required /> Solo</label>
-          <label><input type="radio" name="team" value="small" /> Small (2–10)</label>
-          <label><input type="radio" name="team" value="mid" /> Mid (11–50)</label>
-          <label><input type="radio" name="team" value="large" /> Large (50+)</label>
+        <fieldset data-step="team">
+          <legend>Team size <span class="step-hint" data-hint-for="team"></span></legend>
+          <label class="option"><input type="radio" name="team" value="solo" required /> Solo</label>
+          <label class="option"><input type="radio" name="team" value="small" /> Small (2–10)</label>
+          <label class="option"><input type="radio" name="team" value="mid" /> Mid (11–50)</label>
+          <label class="option"><input type="radio" name="team" value="large" /> Large (50+)</label>
         </fieldset>
 
-        <button type="submit" class="btn-primary">Show recommendations</button>
+        <p id="form-hint" class="form-hint" hidden></p>
+
+        <div class="submit-bar">
+          <button type="submit" class="btn-primary" id="submit-btn">Show recommendations</button>
+        </div>
       </form>
     </section>
 
@@ -62,7 +82,19 @@
       </p>
       <p id="mismatch-note" class="mismatch" hidden></p>
       <div id="cards" class="cards"></div>
+      <p id="faq-links" class="faq-links" hidden></p>
       <button type="button" id="reset-btn" class="btn-secondary">Start over</button>
+    </section>
+
+    <section id="guides" class="guides" aria-labelledby="guides-heading">
+      <h2 id="guides-heading">Decision guides</h2>
+      <ul class="guide-list">
+        <li><a href="faq-email-creators.html">Best email tool for creators / newsletter?</a> (Kit-focused)</li>
+        <li><a href="faq-landing-page-builder.html">Landing page builder vs DIY?</a> (Leadpages slot)</li>
+        <li><a href="faq-seo-solo.html">SEO / AI-visibility for a solo writer?</a> (Surfer slot)</li>
+        <li><a href="stack-under-100.html">What to buy first on ≤$50–100/mo</a></li>
+        <li><a href="compare-kit-leadpages-surfer.html">Thin compare: Kit · Leadpages · Surfer</a></li>
+      </ul>
     </section>
 
     <section id="compare" class="compare" aria-labelledby="compare-heading">
@@ -125,14 +157,18 @@
         <li><strong>Research vs hands-on:</strong> cards paraphrase official positioning. We have not tested the tools. No testimonials, stars, or “we tried this.”</li>
         <li><strong>Affiliate disclosure:</strong> commissions may apply later. CTAs are <code>/go/placeholder?utm_…</code> stubs until PartnerStack links exist.</li>
       </ol>
-      <p><a href="methodology.html">Full methodology</a></p>
+      <p><a href="methodology.html">Full methodology</a> · <a href="measurement.html">How measurement works</a></p>
     </section>
   </main>
 
   <footer class="site-footer">
     <p>
-      First-hosting picker may come later. Built for Affairs cycle-1 MVP.
-      <a href="methodology.html">Methodology</a>
+      First-hosting picker may come later. Built for Affairs cycle-1 MVP · $0 GitHub Pages.
+      <a href="methodology.html">Methodology</a> ·
+      <a href="measurement.html">Measurement</a> ·
+      <a href="stack-under-100.html">Stack guide</a> ·
+      <a href="robots.txt">robots</a> ·
+      <a href="sitemap.xml">sitemap</a>
     </p>
   </footer>
 
