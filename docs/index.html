@@ -4,16 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI Tool Chooser — Affairs</title>
-  <meta name="description" content="Answer a few questions to get placeholder AI tool recommendations. Affiliate disclosure applies." />
+  <meta name="description" content="Answer a few questions to get research-labeled tool matches for Kit, Leadpages, and Surfer. Not hands-on reviews. Affiliate disclosure applies." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <a class="skip-link" href="#selector">Skip to chooser</a>
+
   <header class="site-header">
     <p class="disclosure" role="note">
       <strong>Affiliate disclosure:</strong> We may earn a commission when you buy through links on this site.
+      Until PartnerStack links exist, every “View” button is a <code>/go/placeholder</code> stub — it does not send you to a vendor.
     </p>
     <h1>AI Tool Chooser</h1>
-    <p class="lede">Answer 3 short questions. We’ll show 3 placeholder tool cards matched to your answers — not hands-on reviews.</p>
+    <p class="lede">
+      Answer 3 short questions. We’ll rank <strong>Kit</strong>, <strong>Leadpages</strong>, and <strong>Surfer</strong>
+      from published positioning — <em>not</em> hands-on reviews, testimonials, or star ratings.
+    </p>
   </header>
 
   <main>
@@ -50,14 +56,84 @@
 
     <section id="results" class="results" hidden aria-live="polite" aria-labelledby="results-heading">
       <h2 id="results-heading">Placeholder recommendations</h2>
-      <p class="results-note">Cycle-1 named slots: Kit, Leadpages, Surfer. Pros/cons are research-labeled fit copy — not a hands-on review.</p>
+      <p class="results-note">
+        Cycle-1 named slots: Kit, Leadpages, Surfer. Copy is research-labeled fit notes from each vendor’s
+        published positioning — not a hands-on review.
+      </p>
+      <p id="mismatch-note" class="mismatch" hidden></p>
       <div id="cards" class="cards"></div>
       <button type="button" id="reset-btn" class="btn-secondary">Start over</button>
+    </section>
+
+    <section id="compare" class="compare" aria-labelledby="compare-heading">
+      <h2 id="compare-heading">Quick compare</h2>
+      <p class="section-note">
+        Dimensions we can state from vendor marketing pages. No invented ratings.
+        Cookie / commission numbers stay in internal research notes — not on this public page.
+      </p>
+      <div class="table-wrap" role="region" aria-labelledby="compare-heading" tabindex="0">
+        <table class="compare-table">
+          <caption>Cycle-1 tools by published category and typical buyer</caption>
+          <thead>
+            <tr>
+              <th scope="col">Tool</th>
+              <th scope="col">Category</th>
+              <th scope="col">Typical buyer (published)</th>
+              <th scope="col">Primary job</th>
+              <th scope="col">Not a fit for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Kit</th>
+              <td>Email for creators</td>
+              <td>Creators, newsletter writers, solo businesses</td>
+              <td>List growth, email, automations, creator commerce</td>
+              <td>Transactional ESP, support chat, SEO scoring</td>
+            </tr>
+            <tr>
+              <th scope="row">Leadpages</th>
+              <td>Landing pages</td>
+              <td>Marketers, small businesses, agencies running campaigns</td>
+              <td>Campaign pages, lead capture, on-page testing</td>
+              <td>Email ESP, SEO content editor, helpdesk</td>
+            </tr>
+            <tr>
+              <th scope="row">Surfer</th>
+              <td>SEO / AI content visibility</td>
+              <td>Marketers, agencies, SEO and content teams</td>
+              <td>On-page SEO writing guidance and AI-search visibility</td>
+              <td>Email, landing-page CRO, scheduling / chat</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source-line">
+        Positioning sources: <a href="https://kit.com/" rel="noopener noreferrer">kit.com</a>,
+        <a href="https://www.leadpages.com/" rel="noopener noreferrer">leadpages.com</a>,
+        <a href="https://surferseo.com/" rel="noopener noreferrer">surferseo.com</a>
+        (checked 11 Sep 2026). Research placeholder — not a hands-on review.
+      </p>
+    </section>
+
+    <section id="methodology" class="methodology" aria-labelledby="methodology-heading">
+      <h2 id="methodology-heading">How recommendations work</h2>
+      <ol class="method-list">
+        <li><strong>Primary need is the main weight.</strong> SEO / writing boosts Surfer; creator email / list work boosts Kit; campaign pages boost Leadpages.</li>
+        <li><strong>Budget and team size are modifiers,</strong> only where a vendor publishes a clear fit (e.g. Kit’s free plan; Leadpages’ paid landing-page plans starting at $99/mo on their site).</li>
+        <li><strong>Support / chat and scheduling / ops</strong> do not map to these three products. We still show the cycle-1 slots, reordered by nearest published-fit, with a mismatch note.</li>
+        <li><strong>Research vs hands-on:</strong> cards paraphrase official positioning. We have not tested the tools. No testimonials, stars, or “we tried this.”</li>
+        <li><strong>Affiliate disclosure:</strong> commissions may apply later. CTAs are <code>/go/placeholder?utm_…</code> stubs until PartnerStack links exist.</li>
+      </ol>
+      <p><a href="methodology.html">Full methodology</a></p>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>First-hosting picker may come later. Built for Affairs cycle-1 MVP.</p>
+    <p>
+      First-hosting picker may come later. Built for Affairs cycle-1 MVP.
+      <a href="methodology.html">Methodology</a>
+    </p>
   </footer>
 
   <script src="app.js"></script>
