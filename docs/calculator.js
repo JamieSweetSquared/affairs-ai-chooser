@@ -315,41 +315,242 @@
     }
   }
 
+  var STORAGE_KEY = "affairs_chooser_events";
+
+  var SCENARIOS = {
+    newsletter: {
+      budget: "starter",
+      email: true,
+      landing: false,
+      funnel: false,
+      seo: false,
+      aio: false,
+    },
+    lead: {
+      budget: "starter",
+      email: true,
+      landing: true,
+      funnel: false,
+      seo: false,
+      aio: false,
+    },
+    paid: {
+      budget: "mid",
+      email: true,
+      landing: true,
+      funnel: true,
+      seo: false,
+      aio: true,
+    },
+  };
+
+  function logEvent(type, detail) {
+    var entry = {
+      type: type,
+      detail: detail || {},
+      ts: new Date().toISOString(),
+    };
+    try {
+      console.log("[affairs calculator]", entry);
+      var raw = localStorage.getItem(STORAGE_KEY);
+      var events = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(events)) events = [];
+      events.push(entry);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(events.slice(-100)));
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function applyState(form, s) {
+    var budget = form.querySelector('input[name="budget"][value="' + s.budget + '"]');
+    if (budget) budget.checked = true;
+    form.querySelector('input[name="need_email"]').checked = !!s.email;
+    form.querySelector('input[name="need_landing"]').checked = !!s.landing;
+    form.querySelector('input[name="need_funnel"]').checked = !!s.funnel;
+    form.querySelector('input[name="need_seo"]').checked = !!s.seo;
+    var aioVal = s.aio ? "yes" : "no";
+    var aio = form.querySelector('input[name="prefer_aio"][value="' + aioVal + '"]');
+    if (aio) aio.checked = true;
+    syncSelected(form);
+  }
+
+  function syncSelected(form) {
+    form.querySelectorAll("fieldset").forEach(function (fs) {
+      fs.querySelectorAll("label.option").forEach(function (lab) {
+        var input = lab.querySelector("input");
+        if (!input) return;
+        lab.classList.toggle("is-selected", !!input.checked);
+      });
+    });
+  }
+
+  function stateToParams(s) {
+    var p = new URLSearchParams();
+    p.set("budget", s.budget);
+    p.set("email", s.email ? "1" : "0");
+    p.set("landing", s.landing ? "1" : "0");
+    p.set("funnel", s.funnel ? "1" : "0");
+    p.set("seo", s.seo ? "1" : "0");
+    p.set("aio", s.aio ? "yes" : "no");
+    return p;
+  }
+
+  function paramsToState(params) {
+    if (!params.has("budget") && !params.has("email") && !params.has("aio")) {
+      return null;
+    }
+    var budget = params.get("budget") || "starter";
+    if (!BUDGET_CAPS[budget]) budget = "starter";
+    function flag(key) {
+      var v = params.get(key);
+      return v === "1" || v === "true" || v === "yes";
+    }
+    return {
+      budget: budget,
+      email: flag("email"),
+      landing: flag("landing"),
+      funnel: flag("funnel"),
+      seo: flag("seo"),
+      aio: params.get("aio") === "yes" || params.get("aio") === "1",
+    };
+  }
+
+  function buildShareUrl(s) {
+    var url = new URL(window.location.href);
+    // Drop prior form params; keep path; set fresh state params only (no PII)
+    ["budget", "email", "landing", "funnel", "seo", "aio", "utm_source", "utm_medium", "utm_campaign", "utm_content"].forEach(function (k) {
+      url.searchParams.delete(k);
+    });
+    var p = stateToParams(s);
+    p.forEach(function (v, k) {
+      url.searchParams.set(k, v);
+    });
+    return url.toString();
+  }
+
+  function runEstimate(form) {
+    var s = readForm(form);
+    var est = estimate(s);
+    render(s, est);
+    return s;
+  }
+
   function init() {
     var form = $("stack-cost-form");
     if (!form) return;
 
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
-      var s = readForm(form);
-      var est = estimate(s);
-      render(s, est);
+      var s = runEstimate(form);
+      logEvent("calc_estimate", {
+        budget: s.budget,
+        email: s.email,
+        landing: s.landing,
+        funnel: s.funnel,
+        seo: s.seo,
+        aio: s.aio,
+      });
     });
 
     form.addEventListener("reset", function () {
       window.setTimeout(function () {
         $("calc-output").hidden = true;
         $("calc-disclaimer").hidden = true;
+        syncSelected(form);
+        var st = $("calc-copy-status");
+        if (st) st.textContent = "";
       }, 0);
     });
 
-    // Selected-state polish for radios/checkboxes
     form.addEventListener("change", function (ev) {
       var t = ev.target;
       if (!t || !t.name) return;
-      if (t.type === "radio") {
-        var fs = t.closest("fieldset");
-        if (fs) {
-          fs.querySelectorAll("label.option").forEach(function (lab) {
-            lab.classList.toggle("is-selected", lab.contains(t) && t.checked);
+      syncSelected(form);
+    });
+
+    document.querySelectorAll(".calc-scenario-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var key = btn.getAttribute("data-scenario");
+        var scenario = SCENARIOS[key];
+        if (!scenario) return;
+        applyState(form, scenario);
+        runEstimate(form);
+        logEvent("calc_scenario", { scenario: key });
+        try {
+          $("calc-output").scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch (e) {
+          /* ignore */
+        }
+      });
+    });
+
+    var copyBtn = $("calc-copy-link");
+    var copyStatus = $("calc-copy-status");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", function () {
+        var s = readForm(form);
+        var absolute = buildShareUrl(s);
+        function done(ok) {
+          if (copyStatus) {
+            copyStatus.textContent = ok
+              ? "Link copied (budget/needs/aio only — no personal data)."
+              : "Could not copy — select and copy from the address bar after estimating.";
+          }
+          logEvent("calc_copy_link", {
+            ok: !!ok,
+            budget: s.budget,
+            email: s.email,
+            landing: s.landing,
+            funnel: s.funnel,
+            seo: s.seo,
+            aio: s.aio,
           });
         }
-      }
-      if (t.type === "checkbox") {
-        var lab = t.closest("label.option");
-        if (lab) lab.classList.toggle("is-selected", t.checked);
-      }
-    });
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(absolute).then(
+            function () {
+              done(true);
+            },
+            function () {
+              done(false);
+            }
+          );
+        } else {
+          try {
+            var ta = document.createElement("textarea");
+            ta.value = absolute;
+            ta.setAttribute("readonly", "");
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            var ok = document.execCommand("copy");
+            document.body.removeChild(ta);
+            done(ok);
+          } catch (e) {
+            done(false);
+          }
+        }
+      });
+    }
+
+    // Prefill from URL query params (budget, needs, aio) — no personal data
+    var fromUrl = paramsToState(new URLSearchParams(window.location.search));
+    if (fromUrl) {
+      applyState(form, fromUrl);
+      runEstimate(form);
+      logEvent("calc_prefill_url", {
+        budget: fromUrl.budget,
+        email: fromUrl.email,
+        landing: fromUrl.landing,
+        funnel: fromUrl.funnel,
+        seo: fromUrl.seo,
+        aio: fromUrl.aio,
+      });
+    } else {
+      syncSelected(form);
+    }
   }
 
   if (document.readyState === "loading") {
