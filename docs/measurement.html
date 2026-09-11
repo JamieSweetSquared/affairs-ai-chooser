@@ -28,7 +28,7 @@
     <h1>Measurement</h1>
     <p class="lede">
       How to read the free, local-only event log. No Google Analytics, no paid product analytics — yet.
-      Soft affiliate clicks still use <code>data-affiliate</code> hooks and placeholder UTMs.
+      Affiliate clicks still use <code>data-affiliate</code> hooks and chooser UTMs (live systeme.io href; others placeholder).
     </p>
   </header>
 
@@ -85,10 +85,11 @@
         </table>
       </div>
       <p class="section-note">
-        Each entry also has an ISO <code>ts</code>. CTA hrefs stay
-        <code>/go/placeholder?utm_source=affairs&amp;utm_medium=chooser&amp;utm_campaign=&lt;slug&gt;</code>
-        until PartnerStack destinations replace the path. Soft-clicks are logged; navigation to <code>/go/*</code>
-        is prevented on plain click because that path is not hosted on Pages yet.
+        Each entry also has an ISO <code>ts</code>. Kit / Leadpages / Surfer CTA hrefs stay
+        <code>/go/placeholder?utm_source=affairs&amp;utm_medium=chooser&amp;utm_campaign=&lt;slug&gt;</code>.
+        The systeme.io CTA uses the live affiliate URL plus the same UTM set
+        (<code>utm_campaign=systeme</code>). Placeholder <code>/go/*</code> clicks are logged without navigating
+        (that path is not hosted on Pages). Live affiliate clicks navigate (new tab) and are still logged.
       </p>
     </section>
 
