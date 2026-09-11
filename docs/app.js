@@ -5,7 +5,6 @@
 
   /** Stub ready for a later analytics beacon (e.g. POST to /collect). */
   function sendAnalyticsBeacon(payload) {
-    // Placeholder: replace with navigator.sendBeacon or fetch when endpoint exists.
     if (typeof console !== "undefined" && console.debug) {
       console.debug("[affairs analytics stub]", payload);
     }
@@ -37,103 +36,70 @@
     sendAnalyticsBeacon(entry);
   }
 
-  var CATALOG = {
-    writing: [
-      {
-        slug: "writing-assistant-a",
-        name: "Tool A — Writing Assistant",
-        category: "Writing / content",
-        pros: ["Draft generation", "Tone presets", "Export options"],
-        cons: ["Generic output without editing", "Seat pricing unclear"],
-      },
-      {
-        slug: "writing-assistant-b",
-        name: "Tool B — Long-form Editor",
-        category: "Writing / content",
-        pros: ["Outline → draft flow", "Collaboration comments"],
-        cons: ["Steeper learning curve", "Limited free tier"],
-      },
-      {
-        slug: "writing-assistant-c",
-        name: "Tool C — Brief & Blog Kit",
-        category: "Writing / content",
-        pros: ["Brief templates", "SEO title ideas"],
-        cons: ["Thin fact-checking", "English-first"],
-      },
-    ],
-    seo: [
-      {
-        slug: "seo-research-a",
-        name: "Tool A — Keyword Explorer",
-        category: "SEO / research",
-        pros: ["Keyword clusters", "SERP snapshots"],
-        cons: ["Data freshness varies", "Export limits"],
-      },
-      {
-        slug: "seo-research-b",
-        name: "Tool B — Content Gap Finder",
-        category: "SEO / research",
-        pros: ["Competitor gap lists", "Topic maps"],
-        cons: ["Noisy suggestions", "Requires training data"],
-      },
-      {
-        slug: "seo-research-c",
-        name: "Tool C — On-page Checker",
-        category: "SEO / research",
-        pros: ["Page audits", "Internal link hints"],
-        cons: ["Not a ranking guarantee", "UI busy on mobile"],
-      },
-    ],
-    support: [
-      {
-        slug: "support-chat-a",
-        name: "Tool A — Helpdesk Bot",
-        category: "Support / chat",
-        pros: ["Ticket deflection", "Knowledge sync"],
-        cons: ["Needs good docs first", "Escalation tuning"],
-      },
-      {
-        slug: "support-chat-b",
-        name: "Tool B — Inbox Copilot",
-        category: "Support / chat",
-        pros: ["Reply drafts", "Tone match"],
-        cons: ["Human review still required", "PII caution"],
-      },
-      {
-        slug: "support-chat-c",
-        name: "Tool C — FAQ Builder",
-        category: "Support / chat",
-        pros: ["Auto FAQ from tickets", "Multichannel stub"],
-        cons: ["Shallow answers if corpus thin", "Setup time"],
-      },
-    ],
-    scheduling: [
-      {
-        slug: "scheduling-ops-a",
-        name: "Tool A — Calendar Agent",
-        category: "Scheduling / ops",
-        pros: ["Meeting links", "Timezone helpers"],
-        cons: ["Calendar permission scope", "Limited CRM sync"],
-      },
-      {
-        slug: "scheduling-ops-b",
-        name: "Tool B — Ops Checklist AI",
-        category: "Scheduling / ops",
-        pros: ["Recurring runbooks", "Reminder nudges"],
-        cons: ["Not a full PM suite", "Mobile UX basic"],
-      },
-      {
-        slug: "scheduling-ops-c",
-        name: "Tool C — Capacity Planner",
-        category: "Scheduling / ops",
-        pros: ["Load estimates", "What-if scenarios"],
-        cons: ["Assumes clean inputs", "Export-only reports"],
-      },
-    ],
-  };
+  // Named cycle-1 slots. Pros/cons are research-labeled fit copy — not hands-on reviews.
+  var TOOLS = [
+    {
+      slug: "kit",
+      name: "Kit",
+      category: "Email for creators",
+      fit: "Often a fit when you need creator-focused email + landing basics.",
+      pros: [
+        "Creator-oriented email list tools",
+        "Forms and simple landing pages in one stack",
+        "Common pick for newsletter + digital product flows",
+      ],
+      cons: [
+        "May be more than you need for pure transactional mail",
+        "Pricing scales with subscriber count (check current plans)",
+        "Not a full marketing suite replacement",
+      ],
+    },
+    {
+      slug: "leadpages",
+      name: "Leadpages",
+      category: "Landing pages",
+      fit: "Often a fit when the primary need is fast landing pages and lead capture.",
+      pros: [
+        "Templates aimed at conversion pages",
+        "Form / lead capture workflows",
+        "Useful when you want pages without a full site rebuild",
+      ],
+      cons: [
+        "Overlaps with page builders you may already pay for",
+        "Ongoing subscription vs one-off page needs",
+        "Confirm current integrations before committing",
+      ],
+    },
+    {
+      slug: "surfer",
+      name: "Surfer",
+      category: "SEO / AI writing visibility",
+      fit: "Often a fit when SEO content scoring and on-page guidance matter.",
+      pros: [
+        "On-page SEO content editor / scoring style workflows",
+        "Keyword and SERP-oriented writing guidance",
+        "Common in content teams optimizing published posts",
+      ],
+      cons: [
+        "Scores are guidance, not ranking guarantees",
+        "Best value if you publish content regularly",
+        "May duplicate features in other SEO suites",
+      ],
+    },
+  ];
 
-  function pickTools(need) {
-    return CATALOG[need] || CATALOG.writing;
+  function orderForNeed(need) {
+    // Re-rank the same three named slots by primary need (still placeholders).
+    if (need === "seo" || need === "writing") {
+      return [TOOLS[2], TOOLS[0], TOOLS[1]]; // Surfer, Kit, Leadpages
+    }
+    if (need === "support") {
+      return [TOOLS[0], TOOLS[1], TOOLS[2]]; // Kit, Leadpages, Surfer
+    }
+    if (need === "scheduling") {
+      return [TOOLS[1], TOOLS[0], TOOLS[2]]; // Leadpages, Kit, Surfer
+    }
+    return TOOLS.slice();
   }
 
   function ctaHref(slug) {
@@ -153,24 +119,29 @@
 
       var badge = document.createElement("span");
       badge.className = "placeholder-badge";
-      badge.textContent = "Placeholder";
+      badge.textContent = "Research placeholder";
 
       var h3 = document.createElement("h3");
       h3.textContent = tool.name;
 
-      var match = document.createElement("p");
-      match.className = "match";
-      match.textContent =
-        "Matched for " +
+      var cat = document.createElement("p");
+      cat.className = "match";
+      cat.textContent =
+        tool.category +
+        " · ranked for " +
         answers.need +
         " · " +
         answers.budget +
         " · " +
         answers.team;
 
+      var fit = document.createElement("p");
+      fit.textContent = tool.fit;
+
       var prosLabel = document.createElement("p");
       prosLabel.className = "label";
-      prosLabel.textContent = "Pros — Research placeholder — not a hands-on review";
+      prosLabel.textContent =
+        "Pros — Research placeholder — not a hands-on review";
 
       var pros = document.createElement("ul");
       tool.pros.forEach(function (p) {
@@ -181,7 +152,8 @@
 
       var consLabel = document.createElement("p");
       consLabel.className = "label";
-      consLabel.textContent = "Cons — Research placeholder — not a hands-on review";
+      consLabel.textContent =
+        "Cons — Research placeholder — not a hands-on review";
 
       var cons = document.createElement("ul");
       tool.cons.forEach(function (c) {
@@ -193,19 +165,17 @@
       var cta = document.createElement("a");
       cta.className = "cta";
       cta.href = ctaHref(tool.slug);
-      cta.textContent = "View tool (placeholder)";
+      cta.textContent = "View " + tool.name + " (placeholder CTA)";
       cta.setAttribute("data-affiliate", tool.slug);
       cta.setAttribute("data-rank", String(i + 1));
       cta.addEventListener("click", function (ev) {
-        // Keep # fallback soft-nav if path 404s on Pages; still log.
         logEvent("affiliate_click", {
           slug: tool.slug,
           rank: i + 1,
-          href: cta.href,
+          href: cta.getAttribute("href"),
           answers: answers,
         });
-        // For MVP on GitHub Pages, /go/* does not exist — use # after log if desired.
-        // Prefer showing campaign URL in href for inspection; prevent broken nav.
+        // /go/* not hosted on Pages yet — keep href for UTM inspection, prevent 404 nav.
         if (!ev.metaKey && !ev.ctrlKey) {
           ev.preventDefault();
         }
@@ -213,7 +183,8 @@
 
       card.appendChild(badge);
       card.appendChild(h3);
-      card.appendChild(match);
+      card.appendChild(cat);
+      card.appendChild(fit);
       card.appendChild(prosLabel);
       card.appendChild(pros);
       card.appendChild(consLabel);
@@ -237,10 +208,15 @@
     };
     if (!answers.budget || !answers.need || !answers.team) return;
 
-    var tools = pickTools(answers.need);
+    var tools = orderForNeed(answers.need);
     renderCards(tools, answers);
     results.hidden = false;
-    logEvent("recommend", { answers: answers, tools: tools.map(function (t) { return t.slug; }) });
+    logEvent("recommend", {
+      answers: answers,
+      tools: tools.map(function (t) {
+        return t.slug;
+      }),
+    });
     results.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
