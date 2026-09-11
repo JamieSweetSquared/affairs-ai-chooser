@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Measurement — AI Tool Chooser — Affairs</title>
-  <meta name="description" content="How to read localStorage affairs_chooser_events on the Affairs AI Tool Chooser. Free, no paid analytics yet." />
+  <meta name="description" content="How Affairs measures the AI Tool Chooser: localStorage events (live), Cloudflare Web Analytics (parked pending token), and money only via systeme.io → Ops PNL." />
   <link rel="canonical" href="https://jamiesweetsquared.github.io/affairs-ai-chooser/measurement.html" />
     <meta property="og:title" content="Measurement — AI Tool Chooser — Affairs" />
-  <meta property="og:description" content="How to read localStorage affairs_chooser_events on the Affairs AI Tool Chooser. Free, no paid analytics yet." />
+  <meta property="og:description" content="How Affairs measures the AI Tool Chooser: localStorage events (live), Cloudflare Web Analytics (parked pending token), and money only via systeme.io → Ops PNL." />
   <meta property="og:url" content="https://jamiesweetsquared.github.io/affairs-ai-chooser/measurement.html" />
   <meta property="og:type" content="website" />
   <link rel="stylesheet" href="styles.css" />
@@ -18,7 +18,7 @@
   <header class="site-header">
     <p class="disclosure" role="note">
       <strong>Affiliate disclosure:</strong> We may earn a commission when you buy through links on this site.
-      Measurement below is first-party browser storage only — no paid analytics vendor on this MVP.
+      Measurement below covers three layers — only localStorage events are live in your browser today.
     </p>
     <nav class="site-nav" aria-label="Site">
       <a href="./">Chooser</a>
@@ -33,14 +33,57 @@
     <p class="crumb"><a href="./">← Back to the chooser</a></p>
     <h1>Measurement</h1>
     <p class="lede">
-      How to read the free, local-only event log. No Google Analytics, no paid product analytics — yet.
+      Three layers. Clicks are not revenue. There is <strong>no public Cloudflare dashboard</strong> yet —
+      Web Analytics signup is parked (Turnstile). Money lives only in systeme.io for Ops PNL.
       Affiliate clicks still use <code>data-affiliate</code> hooks and chooser UTMs (live systeme.io href; others placeholder).
     </p>
   </header>
 
   <main id="content">
+    <section aria-labelledby="layers-h">
+      <h2 id="layers-h">Three layers (honest status)</h2>
+      <div class="table-wrap" role="region" aria-labelledby="layers-h" tabindex="0">
+        <table class="compare-table">
+          <caption>What is live vs parked</caption>
+          <thead>
+            <tr>
+              <th scope="col">Layer</th>
+              <th scope="col">Status</th>
+              <th scope="col">What it tells you</th>
+              <th scope="col">Money?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><code>localStorage</code></th>
+              <td><strong>Live</strong></td>
+              <td>Per-browser chooser events under <code>affairs_chooser_events</code> (this page)</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <th scope="row">Cloudflare Web Analytics</th>
+              <td><strong>Parked</strong> — pending beacon token</td>
+              <td>When enabled: aggregate page views / referrers in the CF dashboard (private). Loader is on every page (<code>analytics-config.js</code> + <code>analytics.js</code>) with <code>enabled: false</code> and empty token — <strong>no network calls</strong> until flipped.</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <th scope="row">Money (affiliate)</th>
+              <td>systeme.io affiliate dashboard → Ops</td>
+              <td>Pending / approved / cash only there. Ops books cash received via the PNL / systeme SOP in private records — not on this public site.</td>
+              <td>Only <strong>cash received</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="section-note">
+        Internal tracking notes (incl. CF status and Ops PNL SOP) live in private <strong>records</strong>
+        (<code>TRACKING.md</code> / <code>PNL-SYSTEME-SOP.md</code> — not linked as a public CF dashboard.
+        Do not treat this page as proof that aggregate CF analytics are live.
+      </p>
+    </section>
+
     <section aria-labelledby="key-h">
-      <h2 id="key-h">Storage key</h2>
+      <h2 id="key-h">Layer 1 — Storage key (live)</h2>
       <p>
         Events are appended to browser <code>localStorage</code> under
         <strong><code>affairs_chooser_events</code></strong> (see <code>app.js</code>).
@@ -108,8 +151,28 @@
       <p>Clear the log (optional):</p>
       <pre class="code-block" tabindex="0">localStorage.removeItem('affairs_chooser_events')</pre>
       <p class="section-note">
-        Data never leaves your browser on this MVP. Clearing site data or using another device/profile
-        starts a new empty log. This is not a substitute for later server-side analytics.
+        localStorage data never leaves your browser. Clearing site data or using another device/profile
+        starts a new empty log. This is not a substitute for later aggregate analytics.
+      </p>
+    </section>
+
+    <section aria-labelledby="cf-h">
+      <h2 id="cf-h">Layer 2 — Cloudflare Web Analytics (parked)</h2>
+      <p>
+        Sitewide loader scripts are deployed: <code>analytics-config.js</code> then <code>analytics.js</code>.
+        Config currently has an empty <code>cloudflareToken</code> and <code>enabled: false</code>, so the beacon
+        does not load and makes no network requests. When a real CF Web Analytics token is set and
+        <code>enabled</code> flipped to <code>true</code>, the beacon will report aggregate traffic to the
+        Cloudflare dashboard (private account view — not claimed as public on this site).
+      </p>
+    </section>
+
+    <section aria-labelledby="money-h">
+      <h2 id="money-h">Layer 3 — Money only in systeme.io → Ops PNL</h2>
+      <p>
+        Affiliate pending / approved / paid amounts live in the systeme.io affiliate dashboard.
+        Ops records cash received per the private PNL / systeme SOP. This public page does not show
+        balances, commissions, or a CF dashboard link.
       </p>
     </section>
 
@@ -134,5 +197,7 @@
       <a href="switching-notes.html">Switching</a> · Affairs cycle-1 MVP · $0 GitHub Pages
     </p>
   </footer>
+  <script src="analytics-config.js"></script>
+  <script src="analytics.js"></script>
 </body>
 </html>
