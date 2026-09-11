@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Measurement — AI Tool Chooser — Affairs</title>
+  <meta name="description" content="How to read localStorage affairs_chooser_events on the Affairs AI Tool Chooser. Free, no paid analytics yet." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <p class="disclosure" role="note">
+      <strong>Affiliate disclosure:</strong> We may earn a commission when you buy through links on this site.
+      Measurement below is first-party browser storage only — no paid analytics vendor on this MVP.
+    </p>
+    <nav class="site-nav" aria-label="Site">
+      <a href="./">Chooser</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="stack-under-100.html">Stack ≤$100</a>
+      <a href="faq-email-creators.html">Creator email</a>
+      <a href="faq-landing-page-builder.html">Landing pages</a>
+      <a href="faq-seo-solo.html">SEO solo</a>
+      <a href="compare-kit-leadpages-surfer.html">Compare</a>
+    </nav>
+    <p class="crumb"><a href="./">← Back to the chooser</a></p>
+    <h1>Measurement</h1>
+    <p class="lede">
+      How to read the free, local-only event log. No Google Analytics, no paid product analytics — yet.
+      Soft affiliate clicks still use <code>data-affiliate</code> hooks and placeholder UTMs.
+    </p>
+  </header>
+
+  <main id="content">
+    <section aria-labelledby="key-h">
+      <h2 id="key-h">Storage key</h2>
+      <p>
+        Events are appended to browser <code>localStorage</code> under
+        <strong><code>affairs_chooser_events</code></strong> (see <code>app.js</code>).
+        Cap: last <strong>100</strong> entries. Events also <code>console.log</code> / <code>console.debug</code>
+        via a beacon stub that does not POST anywhere yet.
+      </p>
+    </section>
+
+    <section aria-labelledby="ev-h">
+      <h2 id="ev-h">What each event means</h2>
+      <div class="table-wrap" role="region" aria-labelledby="ev-h" tabindex="0">
+        <table class="compare-table">
+          <caption>Event types written by the chooser</caption>
+          <thead>
+            <tr>
+              <th scope="col">type</th>
+              <th scope="col">When</th>
+              <th scope="col">detail (typical)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><code>page_view</code></th>
+              <td>Chooser page loads</td>
+              <td><code>path</code></td>
+            </tr>
+            <tr>
+              <th scope="row"><code>recommend</code></th>
+              <td>You submit the form</td>
+              <td><code>answers</code>, ranked <code>tools</code> with scores</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>affiliate_click</code></th>
+              <td>You click a card CTA</td>
+              <td><code>slug</code>, <code>rank</code>, <code>href</code>, <code>score</code>, <code>answers</code></td>
+            </tr>
+            <tr>
+              <th scope="row"><code>reset</code></th>
+              <td>You hit Start over</td>
+              <td>empty object</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>progress</code></th>
+              <td>You complete a fieldset (budget / need / team)</td>
+              <td><code>field</code>, <code>value</code>, <code>filled</code> count</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="section-note">
+        Each entry also has an ISO <code>ts</code>. CTA hrefs stay
+        <code>/go/placeholder?utm_source=affairs&amp;utm_medium=chooser&amp;utm_campaign=&lt;slug&gt;</code>
+        until PartnerStack destinations replace the path. Soft-clicks are logged; navigation to <code>/go/*</code>
+        is prevented on plain click because that path is not hosted on Pages yet.
+      </p>
+    </section>
+
+    <section aria-labelledby="export-h">
+      <h2 id="export-h">Export via browser console</h2>
+      <p>On the <a href="./">chooser</a> origin, open DevTools → Console and run:</p>
+      <pre class="code-block" tabindex="0">JSON.parse(localStorage.getItem('affairs_chooser_events') || '[]')</pre>
+      <p>Pretty-print / copy:</p>
+      <pre class="code-block" tabindex="0">copy(JSON.stringify(JSON.parse(localStorage.getItem('affairs_chooser_events') || '[]'), null, 2))</pre>
+      <p>Clear the log (optional):</p>
+      <pre class="code-block" tabindex="0">localStorage.removeItem('affairs_chooser_events')</pre>
+      <p class="section-note">
+        Data never leaves your browser on this MVP. Clearing site data or using another device/profile
+        starts a new empty log. This is not a substitute for later server-side analytics.
+      </p>
+    </section>
+
+    <section aria-labelledby="more-h">
+      <h2 id="more-h">Related</h2>
+      <ul>
+        <li><a href="methodology.html">Methodology</a> — ranking weights + research vs hands-on</li>
+        <li><a href="./#selector">Chooser</a> — generate <code>recommend</code> / <code>affiliate_click</code> events</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      <a href="./">AI Tool Chooser</a> ·
+      <a href="methodology.html">Methodology</a> ·
+      Affairs cycle-1 MVP · $0 GitHub Pages
+    </p>
+  </footer>
+</body>
+</html>
