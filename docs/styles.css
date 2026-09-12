@@ -996,3 +996,24 @@ body {
 .capture-status[hidden] {
   display: none;
 }
+
+/* Paid Solo Stack Kit upsell (separate from systeme primary CTA) */
+.kit-upsell-card {
+  background: #fff;
+  border: 1px dashed #9aa8c7;
+  border-radius: 12px;
+  padding: 1.1rem 1.15rem;
+  margin: 1.1rem 0 1.35rem;
+}
+.kit-upsell-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5a6578;
+}
+.kit-upsell-card h2 {
+  margin: 0 0 0.45rem;
+  font-size: 1.15rem;
+}
