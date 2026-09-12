@@ -560,7 +560,7 @@
       if (src !== "letslaunch" && utm !== "letslaunch") return;
       var ll =
         "utm_source=letslaunch&utm_medium=referral&utm_campaign=letslaunch-visit&utm_content=homepage";
-      document.querySelectorAll('a.cta[data-affiliate="systeme"]').forEach(function (a) {
+      document.querySelectorAll('a[data-affiliate="systeme"]').forEach(function (a) {
         var href = a.getAttribute("href") || "";
         if (!href || href.indexOf("systeme.io") === -1) return;
         var base = href.split("?")[0];
