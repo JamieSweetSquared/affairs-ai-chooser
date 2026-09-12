@@ -925,3 +925,74 @@ body {
     padding-bottom: 6.5rem;
   }
 }
+
+/* Capture card — Idea #1 stack cheat-sheet */
+.capture-card {
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.1rem 1.15rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: 36rem;
+}
+.capture-card h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.15rem;
+}
+.capture-card .capture-lede {
+  margin: 0 0 0.85rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+.capture-form {
+  display: grid;
+  gap: 0.65rem;
+}
+.capture-form label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.capture-form label.consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+.capture-form label.consent-label input {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+.capture-form input[type="email"],
+.capture-form input[type="text"] {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #0d1218;
+  color: var(--text);
+  font: inherit;
+}
+.capture-form .btn-primary {
+  width: auto;
+  justify-self: start;
+  margin-top: 0.15rem;
+}
+.capture-note,
+.capture-status {
+  margin: 0.55rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.capture-status[data-state="ok"] {
+  color: #8fd49a;
+}
+.capture-status[data-state="err"] {
+  color: #f0a0a0;
+}
+.capture-status[hidden] {
+  display: none;
+}
