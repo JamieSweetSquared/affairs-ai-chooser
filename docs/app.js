@@ -550,4 +550,34 @@
 
   updateProgress();
   logEvent("page_view", { path: location.pathname });
+
+  // LetsLaunch Visit traffic: stamp systeme CTAs with referral UTMs when ?src=letslaunch or utm_source=letslaunch
+  (function stampLetsLaunchUtms() {
+    try {
+      var params = new URLSearchParams(location.search || "");
+      var src = (params.get("src") || "").toLowerCase();
+      var utm = (params.get("utm_source") || "").toLowerCase();
+      if (src !== "letslaunch" && utm !== "letslaunch") return;
+      var ll =
+        "utm_source=letslaunch&utm_medium=referral&utm_campaign=letslaunch-visit&utm_content=homepage";
+      document.querySelectorAll('a.cta[data-affiliate="systeme"]').forEach(function (a) {
+        var href = a.getAttribute("href") || "";
+        if (!href || href.indexOf("systeme.io") === -1) return;
+        var base = href.split("?")[0];
+        var sa = "";
+        try {
+          var u = new URL(href, location.origin);
+          sa = u.searchParams.get("sa") || "";
+        } catch (e) {
+          var m = href.match(/[?&]sa=([^&]+)/);
+          sa = m ? m[1] : "";
+        }
+        var next = base + (sa ? "?sa=" + encodeURIComponent(sa) + "&" : "?") + ll;
+        a.setAttribute("href", next);
+      });
+      logEvent("letslaunch_visit", { path: location.pathname, src: src || utm });
+    } catch (e) {
+      /* ignore */
+    }
+  })();
 })();
