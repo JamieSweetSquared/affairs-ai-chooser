@@ -220,6 +220,109 @@
     return "";
   }
 
+  /** Two outcome paths after answers (research-labeled — not hands-on). */
+  function pickBranch(answers) {
+    // Branch B — specialist: SEO primary always; team/enterprise → specialist stack
+    // Branch A — AIO / budget funnel+email: free|starter + writing|support|scheduling
+    //   (free+funnel lean systeme; support/scheduling mismatch → practical AIO path)
+    if (answers.need === "seo") return "specialist";
+    if (answers.budget === "free" || answers.budget === "starter") return "aio";
+    return "specialist";
+  }
+
+  function branchCopy(branch, answers) {
+    if (branch === "aio") {
+      return {
+        title: "Path A — All-in-one / budget funnel + email",
+        body:
+          "Your answers lean toward pages + email + a simple offer under one login on a free or starter band. " +
+          "Published positioning: systeme.io is the cycle-1 all-in-one slot (funnels, email, pages, courses, checkout). " +
+          "Research-labeled from vendor marketing — not a hands-on review. Kit / Leadpages / Surfer remain specialist alternatives below (placeholder CTAs until PartnerStack).",
+        ctaLabel: "Start with systeme.io (affiliate)",
+      };
+    }
+    var primary =
+      answers.need === "seo"
+        ? "SEO / research → Surfer is the nearest specialist slot"
+        : answers.need === "writing"
+          ? "Writing / content → Kit is the nearest creator-email specialist slot"
+          : answers.need === "support" || answers.need === "scheduling"
+            ? "Support / scheduling does not map to a dedicated cycle-1 product — showing nearest published-fit specialists"
+            : "Specialist stack";
+    return {
+      title: "Path B — Specialist stack",
+      body:
+        primary +
+        ". Ranked cards below follow published positioning weights (need → budget → team). " +
+        (answers.budget === "free" || answers.budget === "starter"
+          ? "Optional secondary: if you still want funnel + email in one free/starter login, systeme.io remains available below the cards."
+          : "systeme.io stays available on other Affairs pages when you want an all-in-one instead."),
+      ctaLabel: null,
+    };
+  }
+
+  function renderBranchOutcome(branch, answers) {
+    var el = document.getElementById("branch-outcome");
+    if (!el) return;
+    var copy = branchCopy(branch, answers);
+    el.hidden = false;
+    el.setAttribute("data-branch", branch);
+    var html =
+      '<p class="placeholder-badge">' +
+      (branch === "aio" ? "Branch A · research path" : "Branch B · research path") +
+      "</p>" +
+      "<h3>" +
+      copy.title +
+      "</h3>" +
+      '<p class="fit">' +
+      copy.body +
+      "</p>";
+    if (branch === "aio") {
+      var systeme = TOOLS.filter(function (t) {
+        return t.slug === "systeme";
+      })[0];
+      var href = ctaHref(systeme);
+      html +=
+        '<p class="cta-row branch-primary-cta">' +
+        '<a class="cta" href="' +
+        href +
+        '" target="_blank" rel="noopener noreferrer sponsored" data-affiliate="systeme" data-branch="aio" data-rank="featured">' +
+        copy.ctaLabel +
+        "</a>" +
+        ' · <a href="systeme-free-plan-enough.html">Is the free plan enough?</a>' +
+        ' · <a href="faq-systeme-funnel.html">Funnel + email AIO guide</a>' +
+        "</p>" +
+        '<p class="section-note"><strong>Affiliate:</strong> live systeme.io link; we may earn a commission. Not a hands-on endorsement.</p>';
+    }
+    el.innerHTML = html;
+  }
+
+  function renderSecondarySysteme(answers) {
+    var el = document.getElementById("branch-secondary");
+    if (!el) return;
+    // Optional secondary systeme only on specialist branch when budget is free/starter
+    if (!(answers.budget === "free" || answers.budget === "starter")) {
+      el.hidden = true;
+      el.innerHTML = "";
+      return;
+    }
+    var systeme = TOOLS.filter(function (t) {
+      return t.slug === "systeme";
+    })[0];
+    var href = appendChooserUtms(systeme.affiliateHref, "branch-b-secondary");
+    el.hidden = false;
+    el.innerHTML =
+      '<p class="placeholder-badge">Optional secondary · free/starter band</p>' +
+      "<h3>Still want funnel + email in one login?</h3>" +
+      '<p class="fit">Specialist path above is primary for your answers. If budget is free/starter and you prefer one dashboard for pages + email + a simple offer, systeme.io’s published free/starter plans are the optional secondary — research-labeled, not a review.</p>' +
+      '<p class="cta-row">' +
+      '<a class="cta cta-secondary" href="' +
+      href +
+      '" target="_blank" rel="noopener noreferrer sponsored" data-affiliate="systeme" data-branch="specialist-secondary" data-rank="secondary">View systeme.io (optional secondary)</a>' +
+      ' · <a href="faq-all-in-one-vs-stack.html">AIO vs specialist stack</a>' +
+      "</p>";
+  }
+
   function appendChooserUtms(href, slug) {
     // Merge UTMs onto an existing query (e.g. ?sa=… already present → use & for utm).
     var hasQuery = href.indexOf("?") !== -1;
@@ -361,6 +464,7 @@
       }
       cta.setAttribute("data-affiliate", tool.slug);
       cta.setAttribute("data-rank", String(i + 1));
+      cta.setAttribute("data-logged-by-card", "1");
       cta.addEventListener("click", function (ev) {
         logEvent("affiliate_click", {
           slug: tool.slug,
@@ -500,8 +604,27 @@
       return;
     }
 
+    var branch = pickBranch(answers);
     var ranked = orderTools(answers);
+    // Branch A: put systeme first for emphasis; Branch B: keep score order (specialists usually top)
+    if (branch === "aio") {
+      ranked = ranked.slice().sort(function (a, b) {
+        if (a.tool.slug === "systeme") return -1;
+        if (b.tool.slug === "systeme") return 1;
+        if (b.score.total !== a.score.total) return b.score.total - a.score.total;
+        return TOOLS.indexOf(a.tool) - TOOLS.indexOf(b.tool);
+      });
+    }
+    renderBranchOutcome(branch, answers);
     renderCards(ranked, answers);
+    if (branch === "specialist") renderSecondarySysteme(answers);
+    else {
+      var sec = document.getElementById("branch-secondary");
+      if (sec) {
+        sec.hidden = true;
+        sec.innerHTML = "";
+      }
+    }
     renderFaqLinks(answers);
 
     var note = mismatchCopy(answers.need, answers.budget);
@@ -513,9 +636,18 @@
       mismatchEl.textContent = "";
     }
 
+    var resultsHeading = document.getElementById("results-heading");
+    if (resultsHeading) {
+      resultsHeading.textContent =
+        branch === "aio"
+          ? "All-in-one path + ranked slots"
+          : "Specialist stack + ranked slots";
+    }
+
     results.hidden = false;
     logEvent("recommend", {
       answers: answers,
+      branch: branch,
       tools: ranked.map(function (r) {
         return { slug: r.tool.slug, score: r.score.total };
       }),
@@ -531,6 +663,19 @@
     mismatchEl.hidden = true;
     mismatchEl.textContent = "";
     document.getElementById("cards").innerHTML = "";
+    var branchEl = document.getElementById("branch-outcome");
+    if (branchEl) {
+      branchEl.hidden = true;
+      branchEl.innerHTML = "";
+      branchEl.removeAttribute("data-branch");
+    }
+    var branchSec = document.getElementById("branch-secondary");
+    if (branchSec) {
+      branchSec.hidden = true;
+      branchSec.innerHTML = "";
+    }
+    var rh = document.getElementById("results-heading");
+    if (rh) rh.textContent = "Placeholder recommendations";
     var faqLinks = document.getElementById("faq-links");
     if (faqLinks) {
       faqLinks.hidden = true;
@@ -550,6 +695,22 @@
 
   updateProgress();
   logEvent("page_view", { path: location.pathname });
+
+  // Delegated affiliate_click for sticky bar, quick-start, branch CTAs, and result cards
+  document.addEventListener("click", function (ev) {
+    var a = ev.target && ev.target.closest ? ev.target.closest("a[data-affiliate]") : null;
+    if (!a) return;
+    // Card CTAs already log in their own listener — skip double-log when data-rank is numeric from card
+    if (a.getAttribute("data-logged-by-card") === "1") return;
+    var slug = a.getAttribute("data-affiliate") || "";
+    logEvent("affiliate_click", {
+      slug: slug,
+      rank: a.getAttribute("data-rank") || "nav",
+      href: a.getAttribute("href") || "",
+      branch: a.getAttribute("data-branch") || null,
+      placement: a.id || a.className || "affiliate",
+    });
+  });
 
   // LetsLaunch Visit traffic: stamp systeme CTAs with referral UTMs when ?src=letslaunch or utm_source=letslaunch
   (function stampLetsLaunchUtms() {
