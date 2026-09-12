@@ -62,6 +62,44 @@
       </p>
     </aside>
 
+    <aside class="capture-card" id="stack-cheatsheet-capture" aria-labelledby="capture-h">
+      <h2 id="capture-h">Free: Solo stack cheat-sheet</h2>
+      <p class="capture-lede">
+        One-page research-labeled summary: email vs landing vs all-in-one under ~$100/mo.
+        No earnings claims. Primary path above stays start-free on systeme.io.
+      </p>
+      <form class="capture-form" id="cheatsheet-form"
+            action="https://formsubmit.co/affairs@agentmail.to"
+            method="POST">
+        <input type="hidden" name="_subject" value="STACK-CHEATSHEET" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_next" value="https://jamiesweetsquared.github.io/affairs-ai-chooser/thanks-cheatsheet.html" />
+        <input type="hidden" name="utm_source" id="cap-utm-source" value="" />
+        <input type="hidden" name="utm_medium" id="cap-utm-medium" value="" />
+        <input type="hidden" name="utm_campaign" id="cap-utm-campaign" value="" />
+        <input type="hidden" name="utm_content" id="cap-utm-content" value="" />
+        <label>
+          Email <span aria-hidden="true">*</span>
+          <input type="email" name="email" required autocomplete="email" placeholder="you@example.com" />
+        </label>
+        <label>
+          Name <span class="form-hint">(optional)</span>
+          <input type="text" name="name" autocomplete="name" placeholder="Optional" />
+        </label>
+        <label class="consent-label">
+          <input type="checkbox" name="consent" value="yes" required />
+          <span>Email me the free stack cheat-sheet. Unsubscribe anytime. Permission-based only.</span>
+        </label>
+        <button type="submit" class="btn-primary" id="cheatsheet-submit">Send me the cheat-sheet</button>
+      </form>
+      <p class="capture-status" id="cheatsheet-status" hidden role="status"></p>
+      <p class="capture-note">
+        Permission-based list only. Unsubscribe via reply <strong>STOP</strong>.
+        Or read now: <a href="stack-cheatsheet.html">open the cheat-sheet</a>.
+      </p>
+    </aside>
+
     <section aria-labelledby="why-h">
       <h2 id="why-h">Why visitors land here</h2>
       <p>
@@ -79,6 +117,7 @@
       <h2 id="next-h">Useful next steps</h2>
       <ul class="guide-list">
         <li><a href="systeme-free-plan-enough.html"><strong>Is systeme.io’s free plan enough?</strong></a> — honest free vs pay vs skip</li>
+        <li><a href="stack-cheatsheet.html"><strong>Solo stack cheat-sheet</strong></a> — email vs landing vs AIO under ~$100/mo</li>
         <li><a href="./#selector"><strong>Run the AI Tool Chooser</strong></a> — 3 questions → research-labeled matches</li>
         <li><a href="stack-cost-calculator.html">Estimate solo stack cost</a> (secondary)</li>
         <li><a href="guides.html">Browse all guides</a></li>
@@ -109,6 +148,7 @@
       <a href="guides.html">Guides</a> ·
       <a href="stack-cost-calculator.html">Cost calculator</a> ·
       <a href="systeme-free-plan-enough.html">Free plan enough?</a> ·
+      <a href="stack-cheatsheet.html">Stack cheat-sheet</a> ·
       <a href="methodology.html">Methodology</a> ·
       <a href="measurement.html">Measurement</a> ·
       Affairs cycle-1 MVP · $0 GitHub Pages
@@ -136,6 +176,69 @@
       document.querySelectorAll('a[data-affiliate="systeme"]').forEach(function (a) {
         a.addEventListener("click", function () {
           logEvent("affiliate_click", { affiliate: "systeme", src: "letslaunch", page: "from-letslaunch" });
+        });
+      });
+
+      var form = document.getElementById("cheatsheet-form");
+      if (!form) return;
+      var params = new URLSearchParams(location.search);
+      var utmIds = {
+        utm_source: "cap-utm-source",
+        utm_medium: "cap-utm-medium",
+        utm_campaign: "cap-utm-campaign",
+        utm_content: "cap-utm-content"
+      };
+      function fillUtms() {
+        Object.keys(utmIds).forEach(function (k) {
+          var v = params.get(k);
+          if (v) {
+            var el = document.getElementById(utmIds[k]);
+            if (el) el.value = v;
+          }
+        });
+      }
+      fillUtms();
+      var status = document.getElementById("cheatsheet-status");
+      var btn = document.getElementById("cheatsheet-submit");
+      var ajaxFailed = false;
+      form.addEventListener("submit", function onCaptureSubmit(ev) {
+        if (ajaxFailed) return; // allow classic POST
+        ev.preventDefault();
+        if (!form.reportValidity()) return;
+        var fd = new FormData(form);
+        var payload = {};
+        fd.forEach(function (val, key) { payload[key] = val; });
+        if (btn) { btn.disabled = true; btn.textContent = "Sending…"; }
+        if (status) {
+          status.hidden = false;
+          status.dataset.state = "";
+          status.textContent = "Sending…";
+        }
+        fetch("https://formsubmit.co/ajax/affairs@agentmail.to", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload)
+        }).then(function (res) {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.json().catch(function () { return {}; });
+        }).then(function () {
+          logEvent("capture_submit", { offer: "stack-cheatsheet", via: "ajax", page: "from-letslaunch" });
+          if (status) {
+            status.dataset.state = "ok";
+            status.innerHTML = 'Check your inbox — or <a href="stack-cheatsheet.html">open the cheat-sheet now</a>. Reply STOP to unsubscribe.';
+          }
+          form.reset();
+          fillUtms();
+          if (btn) { btn.disabled = false; btn.textContent = "Send me the cheat-sheet"; }
+        }).catch(function (err) {
+          console.warn("[affairs capture] AJAX failed; classic POST fallback", err);
+          logEvent("capture_submit", { offer: "stack-cheatsheet", via: "post-fallback", page: "from-letslaunch" });
+          ajaxFailed = true;
+          if (status) {
+            status.dataset.state = "";
+            status.textContent = "Redirecting…";
+          }
+          form.submit();
         });
       });
     })();
