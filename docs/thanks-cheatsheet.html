@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thanks — check your inbox for the stack cheat-sheet — Affairs</title>
+  <meta name="description" content="Thanks for opting in. Check your inbox for the solo stack cheat-sheet. Permission-based; reply STOP to unsubscribe." />
+  <link rel="canonical" href="https://jamiesweetsquared.github.io/affairs-ai-chooser/thanks-cheatsheet.html" />
+  <meta property="og:title" content="Thanks — check your inbox for the stack cheat-sheet — Affairs" />
+  <meta property="og:description" content="Thanks for opting in. Check your inbox for the solo stack cheat-sheet. Permission-based; reply STOP to unsubscribe." />
+  <meta property="og:url" content="https://jamiesweetsquared.github.io/affairs-ai-chooser/thanks-cheatsheet.html" />
+  <meta property="og:type" content="website" />
+  <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <p class="disclosure" role="note">
+      <strong>Affiliate disclosure:</strong> We may earn a commission when you buy through links on this site.
+      Live systeme.io CTAs use an affiliate href. No earnings claims on this page.
+    </p>
+    <nav class="site-nav" aria-label="Site">
+      <a href="./">Chooser</a>
+      <a href="from-letslaunch.html">From LetsLaunch</a>
+      <a href="stack-cheatsheet.html">Cheat-sheet</a>
+      <a href="stack-cost-calculator.html">Cost calculator</a>
+    </nav>
+    <h1>Thanks — check your inbox</h1>
+    <p class="lede">
+      If FormSubmit delivered your opt-in, look for a message about the <strong>solo stack cheat-sheet</strong>
+      (subject may include <code>STACK-CHEATSHEET</code>). Permission-based only — reply <strong>STOP</strong> anytime to unsubscribe.
+    </p>
+  </header>
+
+  <main id="content">
+    <section aria-labelledby="next-h">
+      <h2 id="next-h">While you wait</h2>
+      <ul class="guide-list">
+        <li><a href="stack-cheatsheet.html"><strong>Open the cheat-sheet now</strong></a> (same research-labeled page Growth emails)</li>
+        <li><a href="systeme-free-plan-enough.html">Is systeme.io’s free plan enough?</a></li>
+        <li><a href="stack-cost-calculator.html">Estimate solo stack cost</a></li>
+      </ul>
+      <p class="disclosure" role="note">
+        <strong>Affiliate disclosure:</strong> We may earn a commission if you buy through the systeme.io link below.
+      </p>
+      <p class="cta-row ll-cta-row">
+        <a class="btn-primary"
+           href="https://systeme.io/?sa=sa0281332032905064db809aa4c70fcdf0992f044d&amp;utm_source=letslaunch&amp;utm_medium=referral&amp;utm_campaign=letslaunch-visit&amp;utm_content=thanks-cheatsheet"
+           target="_blank"
+           rel="noopener noreferrer sponsored"
+           data-affiliate="systeme">Start free on systeme.io (affiliate)</a>
+        <a class="btn-secondary" href="from-letslaunch.html">Back to Visit landing</a>
+      </p>
+      <p class="section-note">First FormSubmit submit may require one activation click from <code>affairs@agentmail.to</code> — Ops/Growth watch the inbox.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      <a href="./">AI Tool Chooser</a> ·
+      <a href="from-letslaunch.html">From LetsLaunch</a> ·
+      <a href="stack-cheatsheet.html">Cheat-sheet</a> ·
+      Affairs · reply STOP to unsubscribe
+    </p>
+  </footer>
+
+  <script src="analytics-config.js"></script>
+  <script src="analytics.js"></script>
+  <script>
+    (function () {
+      var KEY = "affairs_chooser_events";
+      function logEvent(type, detail) {
+        var entry = { type: type, detail: detail || {}, ts: new Date().toISOString() };
+        console.log("[affairs chooser]", entry);
+        try {
+          var events = JSON.parse(localStorage.getItem(KEY) || "[]");
+          events.push(entry);
+          localStorage.setItem(KEY, JSON.stringify(events.slice(-100)));
+        } catch (e) {}
+      }
+      logEvent("page_view", { path: location.pathname, page: "thanks-cheatsheet" });
+      document.querySelectorAll('a[data-affiliate="systeme"]').forEach(function (a) {
+        a.addEventListener("click", function () {
+          logEvent("affiliate_click", { affiliate: "systeme", page: "thanks-cheatsheet" });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
