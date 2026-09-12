@@ -102,20 +102,24 @@
     <section id="results" class="results" hidden aria-live="polite" aria-labelledby="results-heading">
       <h2 id="results-heading">Placeholder recommendations</h2>
       <p class="results-note">
-        Cycle-1 named slots: Kit, Leadpages, Surfer, systeme.io. Copy is research-labeled fit notes from each vendor’s
-        published positioning — not a hands-on review.
+        Two research paths after your answers: <strong>All-in-one / budget funnel+email</strong> (systeme.io emphasized)
+        or <strong>Specialist stack</strong> (ranked Kit / Leadpages / Surfer). Copy is research-labeled fit notes —
+        not a hands-on review.
       </p>
       <p id="mismatch-note" class="mismatch" hidden></p>
+      <aside id="branch-outcome" class="branch-outcome card" hidden aria-live="polite"></aside>
       <div id="cards" class="cards"></div>
+      <aside id="branch-secondary" class="branch-secondary card" hidden aria-live="polite"></aside>
       <p id="faq-links" class="faq-links" hidden></p>
       <button type="button" id="reset-btn" class="btn-secondary">Start over</button>
     </section>
 
     <section id="guides" class="guides" aria-labelledby="guides-heading">
       <h2 id="guides-heading">Decision guides</h2>
-      <p class="section-note"><a href="guides.html">Browse all guides by intent</a> (email · funnel · stack · switching · WP CRM). Interactive: <a href="stack-cost-calculator.html">solo stack cost calculator</a> · <a href="fluentcrm-vs-aio.html">FluentCRM vs AIO</a> · <a href="systeme-free-plan-enough.html">systeme free plan enough?</a> · <a href="renewal-stack-decision.html">renewal decision</a> · <a href="faq-replace-carrd-mailchimp-calendly.html">Carrd+Mailchimp+Calendly</a> · <a href="digital-product-funnel-planner.html">product funnel planner</a>.</p>
+      <p class="section-note"><a href="guides.html">Browse all guides by intent</a> (email · funnel · stack · switching · WP CRM). Interactive: <a href="stack-cost-calculator.html">solo stack cost calculator</a> · <a href="fluentcrm-vs-aio.html">FluentCRM vs AIO</a> · <a href="memberpress-vs-aio.html">MemberPress vs AIO (draft / CTA held)</a> · <a href="systeme-free-plan-enough.html">systeme free plan enough?</a> · <a href="renewal-stack-decision.html">renewal decision</a> · <a href="faq-replace-carrd-mailchimp-calendly.html">Carrd+Mailchimp+Calendly</a> · <a href="digital-product-funnel-planner.html">product funnel planner</a>.</p>
       <ul class="guide-list">
         <li><a href="fluentcrm-vs-aio.html"><strong>When is FluentCRM / WP email-CRM enough vs an all-in-one?</strong></a> — WP + FluentCRM stack vs hosted AIO; research-labeled</li>
+        <li><a href="memberpress-vs-aio.html"><strong>MemberPress membership vs all-in-one?</strong></a> — <em>Draft / CTA held</em> until MemberPress affiliate approval; research-labeled</li>
         <li><a href="systeme-free-plan-enough.html"><strong>Is systeme.io’s free plan enough for a first funnel?</strong></a> — honest free-plan fit check; research-labeled</li>
         <li><a href="faq-replace-carrd-mailchimp-calendly.html"><strong>Replace Carrd + Mailchimp + Calendly with one stack?</strong></a> — consolidate vs keep specialists</li>
         <li><a href="renewal-stack-decision.html"><strong>Stack renewing: keep or consolidate under $50–$100/mo?</strong></a> — worksheet + keep/switch criteria</li>
@@ -209,6 +213,7 @@
     <section id="methodology" class="methodology" aria-labelledby="methodology-heading">
       <h2 id="methodology-heading">How recommendations work</h2>
       <ol class="method-list">
+        <li><strong>Two outcome branches.</strong> Free/starter + writing/support/scheduling → <em>All-in-one / budget funnel+email</em> (systeme.io emphasized). SEO (any budget) or team/enterprise → <em>Specialist stack</em> (ranked Kit / Leadpages / Surfer; optional systeme secondary on free/starter).</li>
         <li><strong>Primary need is the main weight.</strong> SEO / writing boosts Surfer; creator email / list work boosts Kit; campaign pages boost Leadpages; funnel + email on a budget boosts systeme.io.</li>
         <li><strong>Budget and team size are modifiers,</strong> only where a vendor publishes a clear fit (e.g. Kit’s and systeme.io’s free plans; Leadpages’ paid landing-page plans starting at $99/mo on their site).</li>
         <li><strong>Support / chat and scheduling / ops</strong> do not map to these products as dedicated jobs. We still show the cycle-1 slots, reordered by nearest published-fit, with a mismatch note.</li>
@@ -255,6 +260,21 @@
 </a>
     </p>
   </footer>
+
+  <div class="sticky-systeme-bar" role="complementary" aria-label="systeme.io affiliate offer">
+    <p class="sticky-systeme-copy">
+      <strong>Funnel + email in one login?</strong>
+      <span class="sticky-disclosure">Affiliate: we may earn a commission.</span>
+    </p>
+    <a class="cta sticky-systeme-cta"
+       id="sticky-systeme-cta"
+       href="https://systeme.io/?sa=sa0281332032905064db809aa4c70fcdf0992f044d&amp;utm_source=affairs&amp;utm_medium=chooser&amp;utm_campaign=sticky-systeme"
+       target="_blank"
+       rel="noopener noreferrer sponsored"
+       data-affiliate="systeme"
+       data-rank="sticky"
+       data-branch="sticky">View systeme.io</a>
+  </div>
 
   <script src="app.js"></script>
   <script src="analytics-config.js"></script>
