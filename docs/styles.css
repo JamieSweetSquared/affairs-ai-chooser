@@ -1017,3 +1017,67 @@ body {
   margin: 0 0 0.45rem;
   font-size: 1.15rem;
 }
+
+
+
+/* Day-7 CTA harden — Visit + money-page primary contrast */
+.money-cta-panel {
+  margin: 0.85rem 0 1rem;
+  padding: 0.9rem 1rem;
+  background: linear-gradient(180deg, #152230 0%, #12181f 100%);
+  border: 1px solid var(--accent, #5b9fd4);
+  border-radius: var(--radius, 8px);
+  box-shadow: 0 0 0 1px rgba(91, 159, 212, 0.25), 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+.money-cta-panel .disclosure {
+  margin: 0.35rem 0 0.65rem;
+  font-size: 0.88rem;
+}
+.research-chip {
+  display: inline-block;
+  margin: 0 0 0.55rem;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #0a1016;
+  background: var(--accent, #5b9fd4);
+  border-radius: 4px;
+}
+.cta-micro {
+  margin: 0.45rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted, #9aabbc);
+}
+.cta-hero-primary,
+.ll-money-cta .btn-primary,
+.above-fold-cta .btn-primary,
+.above-fold-cta .cta.btn-primary {
+  font-size: 1.08rem;
+  font-weight: 700;
+  padding: 0.85rem 1.45rem;
+  background: #6eb0e0;
+  color: #071018;
+  border: 2px solid #c8e4f7;
+  box-shadow: 0 4px 20px rgba(91, 159, 212, 0.55);
+  width: auto;
+  display: inline-block;
+}
+.cta-hero-primary:hover,
+.ll-money-cta .btn-primary:hover,
+.above-fold-cta .btn-primary:hover,
+.above-fold-cta .cta.btn-primary:hover {
+  background: #8ec4ea;
+  color: #050a10;
+}
+.ll-money-cta .ll-cta-row { margin: 0; }
+.ll-hero .money-cta-panel { margin-top: 0.75rem; }
+@media (max-width: 559px) {
+  .cta-hero-primary,
+  .ll-money-cta .btn-primary,
+  .above-fold-cta .btn-primary {
+    width: 100%;
+    text-align: center;
+  }
+}
