@@ -1081,3 +1081,65 @@ body {
     text-align: center;
   }
 }
+
+/* Path C — services menu */
+.services-grid {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0.75rem 0 1.5rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .services-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.service-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+}
+.service-card h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+.service-price {
+  margin: 0 0 0.55rem;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.service-price span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.service-card ul {
+  margin: 0.4rem 0 0.55rem;
+  padding-left: 1.15rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+.service-not {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--warn);
+}
+.capture-form select,
+.capture-form textarea {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #0d1218;
+  color: var(--text);
+  font: inherit;
+}
+.capture-form textarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+.product-disclosure {
+  border-left-color: var(--accent);
+}
