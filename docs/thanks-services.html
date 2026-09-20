@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thanks — services inquiry received — Affairs</title>
+  <meta name="description" content="Inquiry received. We reply from affairs@agentmail.to. Booked ≠ paid." />
+  <link rel="canonical" href="https://jamiesweetsquared.github.io/affairs-ai-chooser/thanks-services.html" />
+  <meta property="og:title" content="Thanks — services inquiry received — Affairs" />
+  <meta property="og:description" content="Inquiry received. We reply from affairs@agentmail.to. Booked ≠ paid." />
+  <meta property="og:url" content="https://jamiesweetsquared.github.io/affairs-ai-chooser/thanks-services.html" />
+  <meta property="og:type" content="website" />
+  <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <p class="disclosure product-disclosure" role="note">
+      <strong>Product disclosure:</strong> Affairs paid services inquiries only. Booked ≠ paid.
+      Affiliate chooser lives elsewhere with separate disclosures.
+    </p>
+    <nav class="site-nav" aria-label="Site">
+      <a href="./">Chooser</a>
+      <a href="guides.html">Guides</a>
+      <a href="services.html">Services</a>
+      <a href="solo-stack-kit-buy.html">Solo Stack Kit</a>
+      <a href="methodology.html">Methodology</a>
+    </nav>
+    <h1>Inquiry received</h1>
+    <p class="lede">
+      We reply from <strong>affairs@agentmail.to</strong>.
+      <strong>Booked ≠ paid.</strong> Invoice after scope confirm. Cash only when cleared.
+    </p>
+  </header>
+
+  <main id="content">
+    <section aria-labelledby="next-h">
+      <h2 id="next-h">Next</h2>
+      <ul class="guide-list">
+        <li><a href="services.html"><strong>Back to services menu</strong></a></li>
+        <li><a href="./"><strong>Free AI Tool Chooser</strong></a></li>
+        <li><a href="solo-stack-kit-buy.html">Solo Stack Kit — $12</a></li>
+      </ul>
+      <p class="section-note">Subject line on our side: <code>SERVICES-INQUIRY</code>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      <a href="services.html">Services</a> ·
+      <a href="./">Chooser</a> ·
+      Affairs · booked ≠ paid
+    </p>
+  </footer>
+
+  <script src="analytics-config.js"></script>
+  <script src="analytics.js"></script>
+  <script>
+    (function () {
+      var KEY = "affairs_chooser_events";
+      function logEvent(type, detail) {
+        var entry = { type: type, detail: detail || {}, ts: new Date().toISOString() };
+        console.log("[affairs chooser]", entry);
+        try {
+          var events = JSON.parse(localStorage.getItem(KEY) || "[]");
+          events.push(entry);
+          localStorage.setItem(KEY, JSON.stringify(events.slice(-100)));
+        } catch (e) {}
+      }
+      logEvent("page_view", { path: location.pathname, page: "thanks-services" });
+    })();
+  </script>
+</body>
+</html>
